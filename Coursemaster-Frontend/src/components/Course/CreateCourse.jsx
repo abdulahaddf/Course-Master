@@ -1,0 +1,187 @@
+import React from 'react';
+
+const CreateCourse = ({editingCourse,handleSubmit,handleInputChange, formData, setFormData, addLesson, addModule, setEditingCourse, setShowCreateForm, addBatch}) => {
+    return (
+        <div className="card mb-4">
+            <h2>{editingCourse ? 'Edit Course' : 'Create New Course'}</h2>
+            <form onSubmit={handleSubmit}>
+              <div className="form-group">
+                <label>Title</label>
+                <input
+                  type="text"
+                  name="title"
+                  value={formData.title}
+                  onChange={handleInputChange}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label>Description</label>
+                <textarea
+                  name="description"
+                  value={formData.description}
+                  onChange={handleInputChange}
+                  required
+                  rows="4"
+                />
+              </div>
+              <div className="form-group">
+                <label>Price</label>
+                <input
+                  type="number"
+                  name="price"
+                  value={formData.price}
+                  onChange={handleInputChange}
+                  required
+                  step="0.01"
+                />
+              </div>
+              <div className="form-group">
+                <label>Category</label>
+                <input
+                  type="text"
+                  name="category"
+                  value={formData.category}
+                  onChange={handleInputChange}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label>Tags (comma-separated)</label>
+                <input
+                  type="text"
+                  name="tags"
+                  value={formData.tags}
+                  onChange={handleInputChange}
+                  placeholder="e.g., React, JavaScript, Frontend"
+                />
+              </div>
+
+              <div className="form-group">
+                <h3>Syllabus</h3>
+                {formData.syllabus.map((module, moduleIndex) => (
+                  <div key={moduleIndex} className="border p-3 mb-3">
+                    <h4>Module {moduleIndex + 1}</h4>
+                    <input
+                      type="text"
+                      placeholder="Module Title"
+                      value={module.title}
+                      onChange={(e) => {
+                        const newSyllabus = [...formData.syllabus];
+                        newSyllabus[moduleIndex].title = e.target.value;
+                        setFormData(prev => ({ ...prev, syllabus: newSyllabus }));
+                      }}
+                      className="mb-2"
+                    />
+                    <textarea
+                      placeholder="Module Description"
+                      value={module.description}
+                      onChange={(e) => {
+                        const newSyllabus = [...formData.syllabus];
+                        newSyllabus[moduleIndex].description = e.target.value;
+                        setFormData(prev => ({ ...prev, syllabus: newSyllabus }));
+                      }}
+                      rows="2"
+                      className="mb-2"
+                    />
+                    
+                    <h5>Lessons</h5>
+                    {module.lessons.map((lesson, lessonIndex) => (
+                      <div key={lessonIndex} className="ml-3 mb-2">
+                        <input
+                          type="text"
+                          placeholder="Lesson Title"
+                          value={lesson.title}
+                          onChange={(e) => {
+                            const newSyllabus = [...formData.syllabus];
+                            newSyllabus[moduleIndex].lessons[lessonIndex].title = e.target.value;
+                            setFormData(prev => ({ ...prev, syllabus: newSyllabus }));
+                          }}
+                          className="mb-1"
+                        />
+                        <textarea
+                          placeholder="Lesson Description"
+                          value={lesson.description}
+                          onChange={(e) => {
+                            const newSyllabus = [...formData.syllabus];
+                            newSyllabus[moduleIndex].lessons[lessonIndex].description = e.target.value;
+                            setFormData(prev => ({ ...prev, syllabus: newSyllabus }));
+                          }}
+                          rows="2"
+                          className="mb-1"
+                        />
+                      </div>
+                    ))}
+                    <button type="button" onClick={() => addLesson(moduleIndex)} className="btn btn-secondary btn-sm">
+                      Add Lesson
+                    </button>
+                  </div>
+                ))}
+                <button type="button" onClick={addModule} className="btn btn-primary btn-sm">
+                  Add Module
+                </button>
+              </div>
+
+              <div className="form-group">
+                <h3>Batches</h3>
+                {formData.batches.map((batch, batchIndex) => (
+                  <div key={batchIndex} className="border p-3 mb-3">
+                    <h4>Batch {batchIndex + 1}</h4>
+                    <input
+                      type="text"
+                      placeholder="Batch Name"
+                      value={batch.name}
+                      onChange={(e) => {
+                        const newBatches = [...formData.batches];
+                        newBatches[batchIndex].name = e.target.value;
+                        setFormData(prev => ({ ...prev, batches: newBatches }));
+                      }}
+                      className="mb-2"
+                    />
+                    <input
+                      type="date"
+                      value={batch.startDate}
+                      onChange={(e) => {
+                        const newBatches = [...formData.batches];
+                        newBatches[batchIndex].startDate = e.target.value;
+                        setFormData(prev => ({ ...prev, batches: newBatches }));
+                      }}
+                      className="mb-2"
+                    />
+                    <input
+                      type="date"
+                      value={batch.endDate}
+                      onChange={(e) => {
+                        const newBatches = [...formData.batches];
+                        newBatches[batchIndex].endDate = e.target.value;
+                        setFormData(prev => ({ ...prev, batches: newBatches }));
+                      }}
+                    />
+                  </div>
+                ))}
+                <button type="button" onClick={addBatch} className="btn btn-primary btn-sm">
+                  Add Batch
+                </button>
+              </div>
+
+              <div className="form-group">
+                <button type="submit" className="btn btn-success">
+                  {editingCourse ? 'Update Course' : 'Create Course'}
+                </button>
+                <button 
+                  type="button" 
+                  onClick={() => {
+                    setShowCreateForm(false);
+                    setEditingCourse(null);
+                  }}
+                  className="btn btn-secondary ml-2"
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
+    );
+};
+
+export default CreateCourse;
