@@ -6,7 +6,7 @@ import { getCourses } from '../features/courses/courseSlice';
 const Home = () => {
   const dispatch = useDispatch();
   const { courses, isLoading, isError, message, meta } = useSelector((state) => state.courses);
-  
+  console.log(courses);
   const [searchTerm, setSearchTerm] = useState('');
   const [category, setCategory] = useState('');
   const [sortBy, setSortBy] = useState('');

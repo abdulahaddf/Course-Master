@@ -7,6 +7,7 @@ import { getMe } from "./features/auth/authSlice";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import CourseDetails from "./pages/CourseDetails";
 
 function App() {
   const dispatch = useDispatch();
@@ -26,6 +27,8 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/course/:slug" element={<CourseDetails />} />
+
         </Routes>
       </div>
     </Router>
