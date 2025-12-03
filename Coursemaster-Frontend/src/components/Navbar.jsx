@@ -14,9 +14,9 @@ const Navbar = () => {
   }
 
   return (
-    <nav className="navbar">
-      <div className="container">
-        <NavLink to="/" className="navbar-brand">
+    <nav className="bg-cyan-600 p-5 h-20 mt-4">
+      <div className="max-w-7xl mx-auto flex justify-between items-center">
+        <NavLink to="/" className="navbar-brand text-6xl">
           CourseMaster
         </NavLink>
         
