@@ -5,6 +5,7 @@ import "./App.css";
 import Navbar from "./components/Navbar";
 import { getMe } from "./features/auth/authSlice";
 import Home from "./pages/Home";
+import Login from "./pages/Login";
 
 function App() {
   const dispatch = useDispatch();
@@ -22,6 +23,7 @@ function App() {
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
         </Routes>
       </div>
     </Router>

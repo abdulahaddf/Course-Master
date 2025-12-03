@@ -1,8 +1,8 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import authService from '../../services/authService';
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import authService from "../../services/authService";
 
-const user = JSON.parse(localStorage.getItem('user'));
-const token = localStorage.getItem('token');
+const user = JSON.parse(localStorage.getItem("user"));
+const token = localStorage.getItem("token");
 
 const initialState = {
   user: user || null,
@@ -10,17 +10,17 @@ const initialState = {
   isLoading: false,
   isSuccess: false,
   isError: false,
-  message: ''
+  message: "",
 };
 
 export const register = createAsyncThunk(
-  'auth/register',
+  "auth/register",
   async (userData, thunkAPI) => {
     try {
       const response = await authService.register(userData);
       if (response.token) {
-        localStorage.setItem('token', response.token);
-        localStorage.setItem('user', JSON.stringify(response.user));
+        localStorage.setItem("token", response.token);
+        localStorage.setItem("user", JSON.stringify(response.user));
       }
       return response;
     } catch (error) {
@@ -31,13 +31,13 @@ export const register = createAsyncThunk(
 );
 
 export const login = createAsyncThunk(
-  'auth/login',
+  "auth/login",
   async (userData, thunkAPI) => {
     try {
       const response = await authService.login(userData);
       if (response.token) {
-        localStorage.setItem('token', response.token);
-        localStorage.setItem('user', JSON.stringify(response.user));
+        localStorage.setItem("token", response.token);
+        localStorage.setItem("user", JSON.stringify(response.user));
       }
       return response;
     } catch (error) {
@@ -47,50 +47,44 @@ export const login = createAsyncThunk(
   }
 );
 
-export const logout = createAsyncThunk(
-  'auth/logout',
-  async (_, thunkAPI) => {
-    try {
-      await authService.logout();
-      localStorage.removeItem('token');
-      localStorage.removeItem('user');
-    } catch (error) {
-      const message = error.response?.data?.error || error.message;
-      return thunkAPI.rejectWithValue(message);
-    }
+export const logout = createAsyncThunk("auth/logout", async (_, thunkAPI) => {
+  try {
+    await authService.logout();
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+  } catch (error) {
+    const message = error.response?.data?.error || error.message;
+    return thunkAPI.rejectWithValue(message);
   }
-);
+});
 
-export const getMe = createAsyncThunk(
-  'auth/getMe',
-  async (_, thunkAPI) => {
-    try {
-      const token = localStorage.getItem('token');
-      const response = await authService.getMe(token);
-      return response;
-    } catch (error) {
-      const message = error.response?.data?.error || error.message;
-      return thunkAPI.rejectWithValue(message);
-    }
+export const getMe = createAsyncThunk("auth/getMe", async (_, thunkAPI) => {
+  try {
+    const token = localStorage.getItem("token");
+    const response = await authService.getMe(token);
+    return response;
+  } catch (error) {
+    const message = error.response?.data?.error || error.message;
+    return thunkAPI.rejectWithValue(message);
   }
-);
+});
 
 const authSlice = createSlice({
-  name: 'auth',
+  name: "auth",
   initialState,
   reducers: {
     reset: (state) => {
       state.isLoading = false;
       state.isSuccess = false;
       state.isError = false;
-      state.message = '';
+      state.message = "";
     },
     clearUser: (state) => {
       state.user = null;
       state.token = null;
-      localStorage.removeItem('token');
-      localStorage.removeItem('user');
-    }
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -136,10 +130,10 @@ const authSlice = createSlice({
       .addCase(getMe.rejected, (state) => {
         state.user = null;
         state.token = null;
-        localStorage.removeItem('token');
-        localStorage.removeItem('user');
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
       });
-  }
+  },
 });
 
 export const { reset, clearUser } = authSlice.actions;
