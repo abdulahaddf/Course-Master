@@ -10,6 +10,7 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import StudentDashboard from "./pages/StudentDashboard";
+import AdminPanel from "./pages/AdminPanel";
 
 function App() {
   const dispatch = useDispatch();
@@ -37,6 +38,14 @@ function App() {
                 <StudentDashboard />
               </ProtectedRoute>
             }
+          />
+          <Route 
+            path="/admin" 
+            element={
+              <ProtectedRoute adminOnly>
+                <AdminPanel />
+              </ProtectedRoute>
+            } 
           />
         </Routes>
       </div>
