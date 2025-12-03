@@ -4,10 +4,11 @@ import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import "./App.css";
 import Navbar from "./components/Navbar";
 import { getMe } from "./features/auth/authSlice";
+import CourseDetails from "./pages/CourseDetails";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import CourseDetails from "./pages/CourseDetails";
+import StudentDashboard from "./pages/StudentDashboard";
 
 function App() {
   const dispatch = useDispatch();
@@ -28,7 +29,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/course/:slug" element={<CourseDetails />} />
-
+          <Route path="/dashboard" element={<StudentDashboard />} />
         </Routes>
       </div>
     </Router>
