@@ -1,68 +1,63 @@
-import React from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import { NavLink, useNavigate } from 'react-router-dom'
-import { logout } from '../features/auth/authSlice'
+import React from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { logout } from '../features/auth/authSlice';
 
 const Navbar = () => {
-  const { isAuthenticated, user } = useSelector((state) => state.auth)
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { user } = useSelector((state) => state.auth);
 
-  const handleLogout = () => {
-    dispatch(logout())
-    navigate('/')
-  }
+  const handleLogout = async () => {
+    await dispatch(logout());
+    navigate('/');
+  };
 
   return (
-    <nav className="bg-cyan-600 p-5 h-20 mt-4">
-      <div className="max-w-7xl mx-auto flex justify-between items-center">
-        <NavLink to="/" className="navbar-brand text-6xl">
-          CourseMaster
-        </NavLink>
-        
-        <ul className="navbar-nav">
-          <li>
-            <NavLink to="/" className="nav-link">
-              Home
-            </NavLink>
-          </li>
-          
-          {isAuthenticated ? (
-            <>
-              <li>
-                <NavLink to="/dashboard" className="nav-link">
-                  Dashboard
-                </NavLink>
-              </li>
-              <li>
-                <span className="nav-link">
-                  Welcome, {user?.name}
-                </span>
-              </li>
-              <li>
-                <button onClick={handleLogout} className="btn btn-secondary" style={{ padding: '0.5rem 1rem' }}>
-                  Logout
-                </button>
-              </li>
-            </>
-          ) : (
-            <>
-              <li>
-                <NavLink to="/login" className="nav-link">
-                  Login
-                </NavLink>
-              </li>
-              <li>
-                <NavLink to="/register" className="nav-link">
-                  Register
-                </NavLink>
-              </li>
-            </>
-          )}
-        </ul>
+    <nav className="bg-cyan-500 mb-5">
+      <div className="container max-w-7xl mx-auto">
+        <div className="flex justify-between items-center py-3">
+          <Link to="/" className="navbar-brand">
+            CourseMaster
+          </Link>
+          <ul className="flex space-x-4 list-none m-0 p-0 justify-end items-center text-xl text-white ">
+            <li>
+              <Link to="/">Home</Link>
+            </li>
+            {user ? (
+              <>
+                <li>
+                  <Link to="/dashboard">Dashboard</Link>
+                </li>
+                {user.role === 'admin' && (
+                  <li>
+                    <Link to="/admin">Admin</Link>
+                  </li>
+                )}
+                <li>
+                  <span>Welcome, {user.name}</span>
+                </li>
+                <li>
+                  <button onClick={handleLogout} className="btn btn-secondary">
+                    Logout
+                  </button>
+                </li>
+              </>
+            ) : (
+              <>
+                <li>
+                  <Link to="/login">Login</Link>
+                </li>
+                <li>
+                  <Link to="/register">Register</Link>
+                </li>
+              </>
+            )}
+          </ul>
+        </div>
       </div>
     </nav>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;
