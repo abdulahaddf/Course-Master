@@ -4,6 +4,7 @@ import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import "./App.css";
 import Navbar from "./components/Navbar";
 import { getMe } from "./features/auth/authSlice";
+import ProtectedRoute from "./features/ProtectedRoute/ProtectedRoute";
 import CourseDetails from "./pages/CourseDetails";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
@@ -29,7 +30,14 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/course/:slug" element={<CourseDetails />} />
-          <Route path="/dashboard" element={<StudentDashboard />} />
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                <StudentDashboard />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
       </div>
     </Router>
