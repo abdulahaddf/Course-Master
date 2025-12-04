@@ -52,7 +52,7 @@ const Login = () => {
   };
 
   return (
-    <div className="mx-auto max-w-xl px-4 sm:px-6 lg:px-8">
+    <div className="mx-auto max-w-xl px-4 sm:px-6 lg:px-8 mt-20">
       <div className="card">
         <h1 className="text-3xl text-center font-semibold">Login</h1>
         

@@ -87,13 +87,18 @@ const CourseDetails = () => {
                 <h4>{batch.name}</h4>
                 <p>Start: {new Date(batch.startDate).toLocaleDateString()}</p>
                 <p>End: {new Date(batch.endDate).toLocaleDateString()}</p>
-                <button
+                {
+                  user && user.role === 'admin' ? (
+                    <p className="text-sm text-muted">Admins cannot enroll in courses.</p>
+                  ) : <button
                   onClick={() => handleEnroll(batch)}
                   disabled={enrollmentLoading}
                   className="btn btn-primary"
                 >
                   {enrollmentLoading ? 'Enrolling...' : 'Enroll Now'}
-                </button>
+                </button>  
+                }
+                
               </div>
             ))}
           </div>

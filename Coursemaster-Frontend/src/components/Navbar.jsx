@@ -60,7 +60,7 @@ const Navbar = () => {
                 <li>
                   <button
                     onClick={handleLogout}
-                    className="px-4 py-2 bg-white/20 hover:bg-white/30 text-black rounded-lg border border-black/20 transition"
+                    className="btn btn-primary"
                   >
                     Logout
                   </button>
@@ -146,7 +146,7 @@ const Navbar = () => {
                         setOpen(false);
                         handleLogout();
                       }}
-                      className="w-full px-4 py-2 bg-white/20 hover:bg-white/30 border border-black rounded-lg"
+                      className="btn btn-primary"
                     >
                       Logout
                     </button>
