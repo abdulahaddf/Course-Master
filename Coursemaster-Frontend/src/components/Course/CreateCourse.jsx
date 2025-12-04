@@ -178,9 +178,9 @@ const CreateCourse = ({
                         syllabus: newSyllabus,
                       }));
                     }}
-                    className="bg-red-500 text-white px-4 rounded-md text-sm"
+                    className="bg-red-500 text-white px-4 rounded-md text-xs"
                   >
-                    remove
+                    Remove Lesson
                   </button>
                 </div>
               ))}
@@ -199,7 +199,7 @@ const CreateCourse = ({
                   );
                   setFormData((prev) => ({ ...prev, syllabus: newSyllabus }));
                 }}
-                className="btn btn-danger btn-sm ml-2"
+                className="bg-red-500 text-white px-3 ml-2 py-1 rounded-md text-xs"
               >
                 Remove Module
               </button>
@@ -250,7 +250,6 @@ const CreateCourse = ({
               />
             </div>
           ))}
-       
         </div>
 
         <div className="form-group">
