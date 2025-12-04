@@ -8,20 +8,31 @@ const CourseDetails = () => {
   const { slug } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [enrollmentError, setEnrollmentError] = React.useState('');
   
   const { currentCourse, isLoading, isError, message } = useSelector((state) => state.courses);
   const { user } = useSelector((state) => state.auth);
-  const { isLoading: enrollmentLoading } = useSelector((state) => state.enrollments);
+  const { isLoading: enrollmentLoading, isError: enrollmentIsError, message: enrollmentMessage } = useSelector((state) => state.enrollments);
 
   useEffect(() => {
     dispatch(getCourseBySlug(slug));
   }, [dispatch, slug]);
+
+  useEffect(() => {
+    if (enrollmentIsError && enrollmentMessage) {
+      setEnrollmentError(enrollmentMessage);
+      const timer = setTimeout(() => setEnrollmentError(''), 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [enrollmentIsError, enrollmentMessage]);
 
   const handleEnroll = async (batch) => {
     if (!user) {
       navigate('/login');
       return;
     }
+
+    setEnrollmentError('');
 
     const enrollmentData = {
       courseId: currentCourse._id,
@@ -63,6 +74,11 @@ const CourseDetails = () => {
           
           <div>
             <h3>Available Batches</h3>
+            {enrollmentError && (
+              <div className="alert alert-danger mb-3">
+                {enrollmentError}
+              </div>
+            )}
             {currentCourse.batches?.map((batch, index) => (
               <div key={index} className="mb-3 p-3 border rounded">
                 <h4>{batch.name}</h4>

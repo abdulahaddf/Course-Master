@@ -6,7 +6,7 @@ import CreateCourse from '../components/Course/CreateCourse';
 const AdminPanel = () => {
   const dispatch = useDispatch();
   const { courses, isLoading, isError, message } = useSelector((state) => state.courses);
-  
+  console.log(courses);
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [editingCourse, setEditingCourse] = useState(null);
   const [formData, setFormData] = useState({

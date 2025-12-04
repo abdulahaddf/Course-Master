@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const API_URL = '/api/auth';
-console.log(API_URL);
+
 const authService = {
   register: async (userData) => {
     const response = await axios.post(`${API_URL}/register`, userData);
@@ -10,7 +10,7 @@ const authService = {
 
   login: async (userData) => {
     const response = await axios.post(`${API_URL}/login`, userData);
-    console.log(response);
+    // console.log(response);
     return response.data;
   },
 

@@ -1,5 +1,5 @@
-import Enrollment from '../models/Enrollment.js';
 import Course from '../models/Course.js';
+import Enrollment from '../models/Enrollment.js';
 import { enrollmentSchema } from '../validators/authValidator.js';
 
 export const createEnrollment = async (req, res, next) => {
@@ -17,7 +17,10 @@ export const createEnrollment = async (req, res, next) => {
     });
     
     if (existingEnrollment) {
-      return res.status(400).json({ error: 'Already enrolled in this course' });
+      return res.status(409).json({ 
+        error: 'You are already enrolled in this course',
+        code: 'ALREADY_ENROLLED'
+      });
     }
     
     const enrollment = new Enrollment({
