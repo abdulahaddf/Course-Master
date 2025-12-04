@@ -140,7 +140,7 @@ const CreateCourse = ({
                   />
                   <input
                     type="text"
-                    placeholder="Video URL"
+                    placeholder="Video URL (Youtube video link)"
                     value={lesson.videoUrl || ""}
                     onChange={(e) => {
                       const newSyllabus = [...formData.syllabus];

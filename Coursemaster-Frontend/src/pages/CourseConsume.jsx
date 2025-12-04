@@ -186,7 +186,7 @@ console.log(course)
                 )}
 
                 {isLessonCompleted(currentLesson._id) && (
-                  <div className="card bg-green-500/20 text-green-100 text-center">
+                  <div className="card bg-green-500/20 text-black text-center">
                     ✓ Lesson Completed
                   </div>
                 )}

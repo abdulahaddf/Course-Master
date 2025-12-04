@@ -45,7 +45,7 @@ const StudentDashboard = () => {
               <Link
                 key={enrollment._id}
                 to={`/course/consume/${enrollment._id}`}
-                className="card hover:shadow-xl hover:scale-105 transition-all cursor-pointer block"
+                className="card cursor-pointer"
               >
                 <h3 className="font-bold text-xl">{enrollment.course.title}</h3>
                 <p className="text-muted">{enrollment.course.description}</p>
