@@ -50,10 +50,10 @@ const Home = () => {
 
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div className="bg-white/10 backdrop-blur-md border border-white/20 shadow-lg rounded-2xl p-6">
+      <div className="bg-white/10 backdrop-blur-md border border-white/20 shadow-lg rounded-2xl p-6 ">
         <h1>Available Courses</h1>
         
-        <form onSubmit={handleSearch} className="mb-4">
+        <form onSubmit={handleSearch} className="mb-4 card">
           <div className="grid grid-3">
             <div className="form-group">
               <input

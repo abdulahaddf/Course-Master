@@ -60,12 +60,15 @@ const CourseDetails = () => {
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div className="bg-white/10 backdrop-blur-md border border-white/20 shadow-lg rounded-2xl p-6">
-        <h1>{currentCourse.title}</h1>
+      <div className="card text-center">
+
+        <h1 className="text-3xl font-bold">{currentCourse.title}</h1>
         <p className="text-muted">{currentCourse.description}</p>
+      </div>
         
         <div className="grid grid-2 mt-4 card">
-          <div className="card">
-            <h3>Course Details</h3>
+          <div className="card space-y-2">
+            <h3 className="text-lg">Course Details</h3>
             <p><strong>Instructor:</strong> {currentCourse.instructor?.name}</p>
             <p><strong>Category:</strong> {currentCourse.category}</p>
             <p><strong>Price:</strong> ${currentCourse.price}</p>
@@ -73,14 +76,14 @@ const CourseDetails = () => {
           </div>
           
           <div>
-            <h3>Available Batches</h3>
             {enrollmentError && (
               <div className="alert alert-danger mb-3">
                 {enrollmentError}
               </div>
             )}
             {currentCourse.batches?.map((batch, index) => (
-              <div key={index} className="card">
+              <div key={index} className="card space-y-2">
+                <h3 className="text-lg">Enrollment Details</h3>
                 <h4>{batch.name}</h4>
                 <p>Start: {new Date(batch.startDate).toLocaleDateString()}</p>
                 <p>End: {new Date(batch.endDate).toLocaleDateString()}</p>
@@ -99,14 +102,14 @@ const CourseDetails = () => {
         <div className="mt-4">
           <h3 className="font-bold text-2xl p-2">Course Syllabus</h3>
           {currentCourse.syllabus?.map((module, moduleIndex) => (
-            <div key={moduleIndex} className="bg-white/10 backdrop-blur-md border border-white/20 shadow-sm hover:shadow-xl rounded-2xl p-6 mb-3">
+            <div key={moduleIndex} className="card">
               <h4 className="text-lg font-semibold">Module {module.order}: {module.title}</h4>
               <p>{module.description}</p>
               
               <div className="m-4">
                 
                 {module.lessons?.map((lesson, lessonIndex) => (
-                  <div key={lessonIndex} className="bg-white/10 backdrop-blur-md border border-white/20 shadow-sm hover:shadow-xl rounded-2xl p-6 mb-3">
+                  <div key={lessonIndex} className="card">
                     <h6 className="text-lg">Lesson {lesson.order}: {lesson.title}</h6>
                     <p className="text-muted">{lesson.description}</p>
                     <p className="text-sm">Duration: {lesson.duration} minutes</p>
