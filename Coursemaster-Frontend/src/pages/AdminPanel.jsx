@@ -1,13 +1,12 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import CreateCourse from "../components/Course/CreateCourse";
+import Loading from "../components/Loading";
 import {
   createCourse,
   deleteCourse,
-  getCourses,
   updateCourse,
 } from "../features/courses/courseSlice";
-import Loading from "../components/Loading";
 
 const AdminPanel = () => {
   const dispatch = useDispatch();
@@ -85,15 +84,34 @@ const AdminPanel = () => {
   const handleEdit = (course) => {
     setEditingCourse(course);
     setFormData({
-      title: course.title,
-      description: course.description,
-      price: course.price,
-      category: course.category,
-      tags: course.tags?.join(", "),
-      syllabus: course.syllabus || [
-        { title: "", description: "", lessons: [] },
-      ],
-      batches: course.batches || [{ name: "", startDate: "", endDate: "" }],
+      title: course.title || "",
+      description: course.description || "",
+      price: course.price || "",
+      category: course.category || "",
+      tags: course.tags?.join(", ") || "",
+      syllabus:
+        course.syllabus && course.syllabus.length > 0
+          ? course.syllabus.map((mod) => ({
+              title: mod.title || "",
+              description: mod.description || "",
+              lessons: Array.isArray(mod.lessons)
+                ? mod.lessons.map((lesson) => ({
+                    title: lesson.title || "",
+                    description: lesson.description || "",
+                    videoUrl: lesson.videoUrl || "",
+                    duration: lesson.duration || 0,
+                  }))
+                : [],
+            }))
+          : [{ title: "", description: "", lessons: [] }],
+      batches:
+        course.batches && course.batches.length > 0
+          ? course.batches.map((b) => ({
+              name: b.name || "",
+              startDate: b.startDate || "",
+              endDate: b.endDate || "",
+            }))
+          : [{ name: "", startDate: "", endDate: "" }],
     });
     setShowCreateForm(true);
   };
@@ -112,25 +130,26 @@ const AdminPanel = () => {
   };
 
   const addLesson = (moduleIndex) => {
-    const newSyllabus = [...formData.syllabus];
-    newSyllabus[moduleIndex].lessons.push({
-      title: "",
-      description: "",
-      videoUrl: "",
-      duration: 0,
+    setFormData((prev) => {
+      const newSyllabus = Array.isArray(prev.syllabus)
+        ? [...prev.syllabus]
+        : [];
+      if (!newSyllabus[moduleIndex]) return prev;
+      if (!Array.isArray(newSyllabus[moduleIndex].lessons)) {
+        newSyllabus[moduleIndex].lessons = [];
+      }
+      newSyllabus[moduleIndex].lessons.push({
+        title: "",
+        description: "",
+        videoUrl: "",
+        duration: 0,
+      });
+      return { ...prev, syllabus: newSyllabus };
     });
-    setFormData((prev) => ({ ...prev, syllabus: newSyllabus }));
-  };
-
-  const addBatch = () => {
-    setFormData((prev) => ({
-      ...prev,
-      batches: [...prev.batches, { name: "", startDate: "", endDate: "" }],
-    }));
   };
 
   if (isLoading) {
-    return <Loading/>;
+    return <Loading />;
   }
 
   if (isError) {
@@ -141,9 +160,10 @@ const AdminPanel = () => {
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mt-20">
       <div className="bg-white/10 backdrop-blur-md border border-white/20 shadow-lg rounded-2xl p-6">
         <div className="d-flex justify-content-between align-items-center mb-4">
-          <h1>Admin Panel</h1>
+          <h1 className="border w-fit mx-auto p-5 rounded-2xl text-3xl text-center mb-10 bg-white">
+            Admin Panel
+          </h1>
           <div>
-           
             <button
               onClick={() => setShowCreateForm(true)}
               className="btn btn-primary"
@@ -161,7 +181,6 @@ const AdminPanel = () => {
             formData={formData}
             setFormData={setFormData}
             addLesson={addLesson}
-            addBatch={addBatch}
             addModule={addModule}
             setEditingCourse={setEditingCourse}
             setShowCreateForm={setShowCreateForm}

@@ -86,8 +86,8 @@ const CourseDetails = () => {
               <div key={index} className="card space-y-2">
                 <h3 className="text-lg">Enrollment Details</h3>
                 <h4>{batch.name}</h4>
-                <p>Start: {new Date(batch.startDate).toLocaleDateString()}</p>
-                <p>End: {new Date(batch.endDate).toLocaleDateString()}</p>
+                <p>Starts: {new Date(batch.startDate).toLocaleDateString()}</p>
+                <p>Ends: {new Date(batch.endDate).toLocaleDateString()}</p>
                 {
                   user && user.role === 'admin' ? (
                     <p className="text-sm text-muted">Admins cannot enroll in courses.</p>
@@ -118,7 +118,7 @@ const CourseDetails = () => {
                   <div key={lessonIndex} className="card">
                     <h6 className="text-lg">Lesson {lesson.order}: {lesson.title}</h6>
                     <p className="text-muted">{lesson.description}</p>
-                    <p className="text-sm">Duration: {lesson.duration} minutes</p>
+                    {/* <p className="text-sm">Duration: {lesson.duration} minutes</p> */}
                   </div>
                 ))}
               </div>
