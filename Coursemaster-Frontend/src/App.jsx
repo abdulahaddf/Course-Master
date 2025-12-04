@@ -5,9 +5,11 @@ import "./App.css";
 import Navbar from "./components/Navbar";
 import { getMe } from "./features/auth/authSlice";
 import ProtectedRoute from "./features/ProtectedRoute/ProtectedRoute";
+import AdminAssignments from "./pages/AdminAssignments";
 import AdminPanel from "./pages/AdminPanel";
 import CourseConsume from "./pages/CourseConsume";
 import CourseDetails from "./pages/CourseDetails";
+import CreateQuiz from "./pages/CreateQuiz";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -37,6 +39,22 @@ function App() {
             element={
               <ProtectedRoute>
                 <CourseConsume />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/course/:courseId/assignments"
+            element={
+              <ProtectedRoute adminOnly>
+                <AdminAssignments />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/course/:courseId/quiz/create"
+            element={
+              <ProtectedRoute adminOnly>
+                <CreateQuiz />
               </ProtectedRoute>
             }
           />

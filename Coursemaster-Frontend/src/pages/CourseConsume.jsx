@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import VideoPlayer from "../components/Course/VideoPlayer";
 import Loading from "../components/Loading";
 import {
   completeLesson,
   getMyEnrollments,
 } from "../features/enrollments/enrollmentSlice";
-import VideoPlayer from "../components/Course/VideoPlayer";
+import assignmentService from "../services/assignmentService";
+import quizService from "../services/quizService";
 
 const CourseConsume = () => {
   const { enrollmentId } = useParams();
@@ -15,6 +17,12 @@ const CourseConsume = () => {
   const { enrollments, isLoading } = useSelector((state) => state.enrollments);
   const [selectedModule, setSelectedModule] = useState(0);
   const [selectedLesson, setSelectedLesson] = useState(null);
+  const [assignmentText, setAssignmentText] = useState("");
+  const [assignmentSubmitting, setAssignmentSubmitting] = useState(false);
+  const [quiz, setQuiz] = useState(null);
+  const [quizAnswers, setQuizAnswers] = useState([]);
+  const [quizResult, setQuizResult] = useState(null);
+  const token = useSelector((state) => state.auth.token);
 
   useEffect(() => {
     if (enrollments.length === 0) {
@@ -37,6 +45,64 @@ const CourseConsume = () => {
     }
   };
 
+  // load quiz for selected module
+  useEffect(() => {
+    const loadQuiz = async () => {
+      if (!course || !currentModule) return;
+      try {
+        const q = await quizService.getQuizByCourseModule(
+          course._id,
+          currentModule.title,
+          token
+        );
+        setQuiz(q);
+        setQuizAnswers(q.questions.map(() => null));
+        setQuizResult(null);
+      } catch (e) {
+        setQuiz(null);
+      }
+    };
+    loadQuiz();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedModule]);
+
+  const handleSubmitAssignment = async () => {
+    if (!course || !currentModule) return;
+    setAssignmentSubmitting(true);
+    try {
+      const payload = {
+        courseId: course._id,
+        module: currentModule.title,
+        submission: assignmentText,
+      };
+      await assignmentService.createAssignment(payload, token);
+      setAssignmentText("");
+      alert("Assignment submitted");
+    } catch (err) {
+      alert(err.response?.data?.error || err.message);
+    } finally {
+      setAssignmentSubmitting(false);
+    }
+  };
+
+  const handleQuizAnswer = (qIndex, optionIndex) => {
+    setQuizAnswers((prev) => {
+      const arr = [...prev];
+      arr[qIndex] = optionIndex;
+      return arr;
+    });
+  };
+
+  const handleSubmitQuiz = async () => {
+    if (!quiz) return;
+    try {
+      const res = await quizService.submitQuiz(quiz._id, quizAnswers, token);
+      setQuizResult(res);
+    } catch (err) {
+      alert(err.response?.data?.error || err.message);
+    }
+  };
+
   const isLessonCompleted = (lessonId) => {
     return enrollment?.lessonsCompleted?.some(
       (lesson) => lesson.lessonId === lessonId
@@ -46,7 +112,7 @@ const CourseConsume = () => {
   if (isLoading) {
     return <Loading />;
   }
-console.log(enrollment)
+  console.log(enrollment);
   if (!enrollment) {
     return (
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mt-20">
@@ -65,9 +131,9 @@ console.log(enrollment)
   const course = enrollment.course;
   const currentModule = course.syllabus?.[selectedModule];
   const currentLesson = selectedLesson || currentModule?.lessons?.[0];
-  console.log(currentLesson)
-  console.log(currentLesson.videoUrl)
-console.log(course)
+  console.log(currentLesson);
+  console.log(currentLesson.videoUrl);
+  console.log(course);
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mt-20 mb-20">
       <div className="bg-white/10 backdrop-blur-md border border-white/20 shadow-lg rounded-2xl p-6">
@@ -156,12 +222,11 @@ console.log(course)
                     <h4 className="font-semibold mb-2">Description</h4>
                     <p className="text-justify">{currentLesson.description}</p>
                   </div>
-                
+
                   {currentLesson.videoUrl && (
                     <div className="border-t mt-4 pt-4">
                       <h4 className="font-semibold mb-2">Video</h4>
-                      <VideoPlayer url={currentLesson.videoUrl}/>
-                     
+                      <VideoPlayer url={currentLesson.videoUrl} />
                     </div>
                   )}
 
@@ -173,6 +238,74 @@ console.log(course)
                       </p>
                     </div>
                   )}
+                  {/* Assignment submission UI for this module */}
+                  <div className="border-t mt-4 pt-4">
+                    <h4 className="font-semibold mb-2">Assignment</h4>
+                    <p className="text-sm text-muted mb-2">
+                      Submit a Google Drive link or a text answer for this
+                      module.
+                    </p>
+                    <textarea
+                      placeholder="Paste Drive link or write your answer here"
+                      value={assignmentText}
+                      onChange={(e) => setAssignmentText(e.target.value)}
+                      rows={3}
+                      className="w-full mb-2 p-2 border rounded"
+                    />
+                    <button
+                      onClick={handleSubmitAssignment}
+                      disabled={assignmentSubmitting}
+                      className="btn btn-primary"
+                    >
+                      {assignmentSubmitting
+                        ? "Submitting..."
+                        : "Submit Assignment"}
+                    </button>
+                  </div>
+
+                  {/* Quiz UI for this module */}
+                  <div className="border-t mt-4 pt-4">
+                    <h4 className="font-semibold mb-2">Quiz</h4>
+                    {quiz ? (
+                      <div>
+                        {quiz.questions.map((q, qi) => (
+                          <div key={qi} className="mb-3">
+                            <p className="font-medium">
+                              {qi + 1}. {q.text}
+                            </p>
+                            {q.options.map((opt, oi) => (
+                              <label key={oi} className="block">
+                                <input
+                                  type="radio"
+                                  name={`q-${qi}`}
+                                  checked={quizAnswers[qi] === oi}
+                                  onChange={() => handleQuizAnswer(qi, oi)}
+                                  className="mr-2"
+                                />
+                                {opt}
+                              </label>
+                            ))}
+                          </div>
+                        ))}
+                        <button
+                          onClick={handleSubmitQuiz}
+                          className="btn btn-primary mr-2"
+                        >
+                          Submit Quiz
+                        </button>
+                        {quizResult && (
+                          <div className="mt-2 p-2 bg-green-100 rounded">
+                            Score: {quizResult.score}% —{" "}
+                            {quizResult.correctAnswers}/{quizResult.total}
+                          </div>
+                        )}
+                      </div>
+                    ) : (
+                      <p className="text-sm text-muted">
+                        No quiz for this module.
+                      </p>
+                    )}
+                  </div>
                 </div>
 
                 {/* Complete Button */}

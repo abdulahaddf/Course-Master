@@ -224,6 +224,22 @@ const AdminPanel = () => {
                   Edit
                 </button>
                 <button
+                  onClick={() =>
+                    (window.location.href = `/admin/course/${course._id}/assignments`)
+                  }
+                  className="btn btn-secondary mr-2"
+                >
+                  View Assignments
+                </button>
+                <button
+                  onClick={() =>
+                    (window.location.href = `/admin/course/${course._id}/quiz/create`)
+                  }
+                  className="btn btn-warning"
+                >
+                  Create Quiz
+                </button>
+                <button
                   onClick={() => handleDelete(course._id)}
                   className="btn btn-danger"
                 >
