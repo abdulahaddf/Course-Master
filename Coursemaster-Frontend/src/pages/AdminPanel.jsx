@@ -132,18 +132,32 @@ const AdminPanel = () => {
   const addLesson = (moduleIndex) => {
     setFormData((prev) => {
       const newSyllabus = Array.isArray(prev.syllabus)
-        ? [...prev.syllabus]
-        : [];
-      if (!newSyllabus[moduleIndex]) return prev;
-      if (!Array.isArray(newSyllabus[moduleIndex].lessons)) {
-        newSyllabus[moduleIndex].lessons = [];
-      }
-      newSyllabus[moduleIndex].lessons.push({
-        title: "",
-        description: "",
-        videoUrl: "",
-        duration: 0,
-      });
+        ? prev.syllabus.map((mod, idx) =>
+            idx === moduleIndex
+              ? {
+                  ...mod,
+                  lessons: Array.isArray(mod.lessons)
+                    ? [
+                        ...mod.lessons,
+                        {
+                          title: "",
+                          description: "",
+                          videoUrl: "",
+                          duration: 0,
+                        },
+                      ]
+                    : [
+                        {
+                          title: "",
+                          description: "",
+                          videoUrl: "",
+                          duration: 0,
+                        },
+                      ],
+                }
+              : mod
+          )
+        : prev.syllabus;
       return { ...prev, syllabus: newSyllabus };
     });
   };

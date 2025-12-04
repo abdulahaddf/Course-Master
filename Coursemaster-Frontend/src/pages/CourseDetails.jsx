@@ -20,8 +20,8 @@ const CourseDetails = () => {
   // Checking if the user is already enrolled in the course
   let alreadyEnrolled = false;
   if (user && enrollments) {
-     alreadyEnrolled = enrollments.some(
-      (enrollment) => enrollment.course._id === currentCourse._id
+     alreadyEnrolled = enrollments?.some(
+      (enrollment) => enrollment?.course._id === currentCourse?._id
     );
   }
 console.log(alreadyEnrolled)

@@ -103,7 +103,10 @@ const CreateCourse = ({
 
               <h5>Lessons</h5>
               {(module.lessons || []).map((lesson, lessonIndex) => (
-                <div key={lessonIndex} className="ml-3 mb-2">
+                <div
+                  key={lessonIndex}
+                  className="ml-3 mb-2 border-l-2 border-yellow-500 pl-2"
+                >
                   <input
                     type="text"
                     placeholder="Lesson Title"
@@ -135,6 +138,50 @@ const CreateCourse = ({
                     rows="2"
                     className="mb-1"
                   />
+                  <input
+                    type="text"
+                    placeholder="Video URL"
+                    value={lesson.videoUrl || ""}
+                    onChange={(e) => {
+                      const newSyllabus = [...formData.syllabus];
+                      newSyllabus[moduleIndex].lessons[lessonIndex].videoUrl =
+                        e.target.value;
+                      setFormData((prev) => ({
+                        ...prev,
+                        syllabus: newSyllabus,
+                      }));
+                    }}
+                    className="mb-1"
+                  />
+                  <input
+                    type="number"
+                    placeholder="Duration (minutes)"
+                    value={lesson.duration || ""}
+                    onChange={(e) => {
+                      const newSyllabus = [...formData.syllabus];
+                      newSyllabus[moduleIndex].lessons[lessonIndex].duration =
+                        parseInt(e.target.value) || 0;
+                      setFormData((prev) => ({
+                        ...prev,
+                        syllabus: newSyllabus,
+                      }));
+                    }}
+                    className="mb-1"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const newSyllabus = [...formData.syllabus];
+                      newSyllabus[moduleIndex].lessons.splice(lessonIndex, 1);
+                      setFormData((prev) => ({
+                        ...prev,
+                        syllabus: newSyllabus,
+                      }));
+                    }}
+                    className="bg-red-500 text-white px-4 rounded-md text-sm"
+                  >
+                    remove
+                  </button>
                 </div>
               ))}
               <button
@@ -143,6 +190,18 @@ const CreateCourse = ({
                 className="btn btn-secondary btn-sm"
               >
                 Add Lesson
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  const newSyllabus = formData.syllabus.filter(
+                    (_, index) => index !== moduleIndex
+                  );
+                  setFormData((prev) => ({ ...prev, syllabus: newSyllabus }));
+                }}
+                className="btn btn-danger btn-sm ml-2"
+              >
+                Remove Module
               </button>
             </div>
           ))}
@@ -191,9 +250,7 @@ const CreateCourse = ({
               />
             </div>
           ))}
-          {/* <button type="button" onClick={addBatch} className="btn btn-primary btn-sm">
-                  Add Batch
-                </button> */}
+       
         </div>
 
         <div className="form-group">

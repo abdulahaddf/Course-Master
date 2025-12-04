@@ -5,12 +5,13 @@ import "./App.css";
 import Navbar from "./components/Navbar";
 import { getMe } from "./features/auth/authSlice";
 import ProtectedRoute from "./features/ProtectedRoute/ProtectedRoute";
+import AdminPanel from "./pages/AdminPanel";
+import CourseConsume from "./pages/CourseConsume";
 import CourseDetails from "./pages/CourseDetails";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import StudentDashboard from "./pages/StudentDashboard";
-import AdminPanel from "./pages/AdminPanel";
 
 function App() {
   const dispatch = useDispatch();
@@ -32,6 +33,14 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/course/:slug" element={<CourseDetails />} />
           <Route
+            path="/course/consume/:enrollmentId"
+            element={
+              <ProtectedRoute>
+                <CourseConsume />
+              </ProtectedRoute>
+            }
+          />
+          <Route
             path="/dashboard"
             element={
               <ProtectedRoute>
@@ -39,13 +48,13 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route 
-            path="/admin" 
+          <Route
+            path="/admin"
             element={
               <ProtectedRoute adminOnly>
                 <AdminPanel />
               </ProtectedRoute>
-            } 
+            }
           />
         </Routes>
       </div>
