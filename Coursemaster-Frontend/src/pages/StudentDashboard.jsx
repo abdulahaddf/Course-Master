@@ -39,11 +39,11 @@ const StudentDashboard = () => {
   }
 
   if (isError) {
-    return <div className="error">{message}</div>;
+    return <div className="error mt-40 text-center">{message}</div>;
   }
 
   return (
-    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mt-20">
       <div className="bg-white/10 backdrop-blur-md border border-white/20 shadow-lg rounded-2xl p-6">
         <h1 className="border w-fit mx-auto p-5 rounded-2xl text-3xl text-center mb-10 bg-white">Welcome to your Dashboard, {user?.name}!</h1>
         

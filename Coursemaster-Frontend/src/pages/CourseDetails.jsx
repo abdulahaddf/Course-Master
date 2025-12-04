@@ -63,7 +63,7 @@ const CourseDetails = () => {
       <div className="card text-center">
 
         <h1 className="text-3xl font-bold">{currentCourse.title}</h1>
-        <p className="text-muted">{currentCourse.description}</p>
+        <p className="text-muted pt-2">{currentCourse.description}</p>
       </div>
         
         <div className="grid grid-2 mt-4 card">
