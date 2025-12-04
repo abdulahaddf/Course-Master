@@ -9,7 +9,7 @@ const generateToken = (userId) => {
 export const register = async (req, res, next) => {
   try {
     const validatedData = registerSchema.parse(req.body);
-    
+    console.log(validatedData);
     const existingUser = await User.findOne({ email: validatedData.email });
     if (existingUser) {
       return res.status(400).json({ error: 'Email already registered' });

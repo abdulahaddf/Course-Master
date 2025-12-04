@@ -20,17 +20,19 @@ const Register = () => {
     (state) => state.auth
   );
 
+  // Handle successful registration
+  useEffect(() => {
+    if (isSuccess || user) {
+      navigate("/dashboard");
+    }
+  }, [isSuccess, user, navigate]);
+
+  // Handle errors - show message but don't reset immediately
   useEffect(() => {
     if (isError) {
       console.error(message);
     }
-
-    if (isSuccess || user) {
-      navigate("/dashboard");
-    }
-
-    dispatch(reset());
-  }, [user, isError, isSuccess, message, navigate, dispatch]);
+  }, [isError, message]);
 
   const onChange = (e) => {
     setFormData((prevState) => ({
@@ -55,13 +57,13 @@ const Register = () => {
 
     dispatch(register(userData));
   };
-
+console.log("Error is -", isError)
   return (
     <div className="mx-auto max-w-xl px-4 sm:px-6 lg:px-8 mt-20">
       <div className="card">
         <h1 className="text-3xl text-center font-semibold">Register</h1>
 
-        {isError && <div className="error">{message}</div>}
+        
 
         <form onSubmit={onSubmit}>
           <div className="form-group">
@@ -122,6 +124,8 @@ const Register = () => {
             </button>
           </div>
         </form>
+
+        {isError && <div className="error">{message}</div>}
 
         <p style={{ marginTop: "20px", textAlign: "center" }}>
           Already have an account? <Link to="/login">Login here</Link>
