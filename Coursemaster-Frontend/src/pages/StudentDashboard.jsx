@@ -8,13 +8,13 @@ const StudentDashboard = () => {
   const dispatch = useDispatch();
   const { enrollments, isLoading, isError, message } = useSelector((state) => state.enrollments);
   const { user } = useSelector((state) => state.auth);
-  
+  console.log(enrollments)
   const [selectedEnrollment, setSelectedEnrollment] = useState(null);
   const [selectedLesson, setSelectedLesson] = useState(null);
 
   useEffect(() => {
     dispatch(getMyEnrollments());
-  }, [dispatch]);
+  }, [dispatch,isError]);
 
   const handleLessonClick = (enrollment, lesson) => {
     setSelectedEnrollment(enrollment);
@@ -42,7 +42,7 @@ const StudentDashboard = () => {
   if (isError) {
     return <div className="error mt-40 text-center">{message}</div>;
   }
-
+console.log(message)
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mt-20">
       <div className="bg-white/10 backdrop-blur-md border border-white/20 shadow-lg rounded-2xl p-6">
