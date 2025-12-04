@@ -49,8 +49,8 @@ const Login = () => {
   };
 
   return (
-    <div className="container">
-      <div className="card" style={{ maxWidth: '400px', margin: '0 auto' }}>
+    <div className="mx-auto max-w-xl px-4 sm:px-6 lg:px-8">
+      <div className="bg-white/10 backdrop-blur-md border border-white/20 shadow-lg rounded-2xl p-6">
         <h1>Login</h1>
         
         {isError && <div className="error">{message}</div>}

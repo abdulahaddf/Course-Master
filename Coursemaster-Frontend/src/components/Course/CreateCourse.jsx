@@ -2,7 +2,7 @@ import React from 'react';
 
 const CreateCourse = ({editingCourse,handleSubmit,handleInputChange, formData, setFormData, addLesson, addModule, setEditingCourse, setShowCreateForm, addBatch}) => {
     return (
-        <div className="card mb-4">
+        <div className="bg-white/10 backdrop-blur-md border border-white/20 shadow-lg rounded-2xl p-6 mb-4">
             <h2>{editingCourse ? 'Edit Course' : 'Create New Course'}</h2>
             <form onSubmit={handleSubmit}>
               <div className="form-group">

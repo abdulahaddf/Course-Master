@@ -58,8 +58,8 @@ const CourseDetails = () => {
   }
 
   return (
-    <div className="container">
-      <div className="card">
+    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="bg-white/10 backdrop-blur-md border border-white/20 shadow-lg rounded-2xl p-6">
         <h1>{currentCourse.title}</h1>
         <p className="text-muted">{currentCourse.description}</p>
         
@@ -80,14 +80,14 @@ const CourseDetails = () => {
               </div>
             )}
             {currentCourse.batches?.map((batch, index) => (
-              <div key={index} className="mb-3 p-3 border rounded">
+              <div key={index} className="bg-white/10 backdrop-blur-md border border-white/20 shadow-sm hover:shadow-xl rounded-2xl p-6 mb-3">
                 <h4>{batch.name}</h4>
                 <p>Start: {new Date(batch.startDate).toLocaleDateString()}</p>
                 <p>End: {new Date(batch.endDate).toLocaleDateString()}</p>
                 <button
                   onClick={() => handleEnroll(batch)}
                   disabled={enrollmentLoading}
-                  className="btn btn-success"
+                  className="btn btn-primary"
                 >
                   {enrollmentLoading ? 'Enrolling...' : 'Enroll Now'}
                 </button>
@@ -97,17 +97,17 @@ const CourseDetails = () => {
         </div>
 
         <div className="mt-4">
-          <h3>Course Syllabus</h3>
+          <h3 className="font-bold text-2xl p-2">Course Syllabus</h3>
           {currentCourse.syllabus?.map((module, moduleIndex) => (
-            <div key={moduleIndex} className="mb-4">
-              <h4>Module {module.order}: {module.title}</h4>
+            <div key={moduleIndex} className="bg-white/10 backdrop-blur-md border border-white/20 shadow-sm hover:shadow-xl rounded-2xl p-6 mb-3">
+              <h4 className="text-lg font-semibold">Module {module.order}: {module.title}</h4>
               <p>{module.description}</p>
               
-              <div className="ml-4">
-                <h5>Lessons:</h5>
+              <div className="m-4">
+                
                 {module.lessons?.map((lesson, lessonIndex) => (
-                  <div key={lessonIndex} className="mb-2 p-2 border rounded">
-                    <h6>Lesson {lesson.order}: {lesson.title}</h6>
+                  <div key={lessonIndex} className="bg-white/10 backdrop-blur-md border border-white/20 shadow-sm hover:shadow-xl rounded-2xl p-6 mb-3">
+                    <h6 className="text-lg">Lesson {lesson.order}: {lesson.title}</h6>
                     <p className="text-muted">{lesson.description}</p>
                     <p className="text-sm">Duration: {lesson.duration} minutes</p>
                   </div>
@@ -118,7 +118,7 @@ const CourseDetails = () => {
         </div>
 
         <div className="mt-4">
-          <Link to="/" className="btn btn-secondary">
+          <Link to="/" className="btn btn-primary">
             Back to Courses
           </Link>
         </div>

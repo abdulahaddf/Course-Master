@@ -49,8 +49,8 @@ const Home = () => {
   }
 
   return (
-    <div className="container">
-      <div className="card">
+    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="bg-white/10 backdrop-blur-md border border-white/20 shadow-lg rounded-2xl p-6">
         <h1>Available Courses</h1>
         
         <form onSubmit={handleSearch} className="mb-4">
@@ -95,10 +95,10 @@ const Home = () => {
           </button>
         </form>
 
-        <div className="grid grid-2">
+        <div className="grid grid-2 ">
           {courses?.map((course) => (
-            <div key={course._id} className="card">
-              <h3 className="card-title">{course.title}</h3>
+            <div key={course._id} className="bg-white/10 backdrop-blur-md border border-white/20 shadow-lg rounded-2xl p-6">
+              <h3 className="font-bold text-xl">{course.title}</h3>
               <p>{course.description}</p>
               <p><strong>Instructor:</strong> {course.instructor?.name}</p>
               <p><strong>Category:</strong> {course.category}</p>

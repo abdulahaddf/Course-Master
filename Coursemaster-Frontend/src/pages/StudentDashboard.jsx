@@ -43,9 +43,9 @@ const StudentDashboard = () => {
   }
 
   return (
-    <div className="container">
-      <div className="card">
-        <h1>Welcome to your Dashboard, {user?.name}!</h1>
+    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="bg-white/10 backdrop-blur-md border border-white/20 shadow-lg rounded-2xl p-6">
+        <h1 className="mb-5">Welcome to your Dashboard, {user?.name}!</h1>
         
         {enrollments.length === 0 ? (
           <div className="text-center">
@@ -55,8 +55,8 @@ const StudentDashboard = () => {
         ) : (
           <div className="grid grid-2">
             {enrollments.map((enrollment) => (
-              <div key={enrollment._id} className="card">
-                <h3>{enrollment.course.title}</h3>
+              <div key={enrollment._id} className="bg-white/10 backdrop-blur-md border border-white/20 shadow-lg rounded-2xl p-6">
+                <h3 className="font-bold text-xl">{enrollment.course.title}</h3>
                 <p className="text-muted">{enrollment.course.description}</p>
                 <p><strong>Batch:</strong> {enrollment.batch}</p>
                 <p><strong>Enrolled:</strong> {new Date(enrollment.enrolledAt).toLocaleDateString()}</p>

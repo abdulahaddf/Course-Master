@@ -1,44 +1,67 @@
-import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { logout } from '../features/auth/authSlice';
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../features/auth/authSlice";
 
 const Navbar = () => {
+  const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.auth);
 
   const handleLogout = async () => {
     await dispatch(logout());
-    navigate('/');
+    navigate("/");
   };
 
   return (
-    <nav className="bg-cyan-500 mb-5">
-      <div className="container max-w-7xl mx-auto">
-        <div className="flex justify-between items-center py-3">
-          <Link to="/" className="navbar-brand">
+    <header className="mb-2">
+      <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        {/* Glass container */}
+        <div className="backdrop-blur-md bg-white/10 border border-white/20 shadow-lg rounded-b-2xl py-3 px-5 flex items-center justify-between">
+          
+          {/* Brand */}
+          <Link
+            to="/"
+            className="text-black font-semibold text-xl tracking-tight"
+          >
             CourseMaster
           </Link>
-          <ul className="flex space-x-4 list-none m-0 p-0 justify-end items-center text-xl text-white ">
+
+          {/* Desktop Links */}
+          <ul className="hidden md:flex items-center gap-6 text-black/90 text-base">
             <li>
-              <Link to="/">Home</Link>
+              <Link className="hover:text-black" to="/">
+                Home
+              </Link>
             </li>
-            {user ? (
+
+            { user ? (
               <>
-                <li>
-                  <Link to="/dashboard">Dashboard</Link>
-                </li>
-                {user.role === 'admin' && (
+             
+
+                {user.role === "student" && (
                   <li>
-                    <Link to="/admin">Admin</Link>
+                    <Link className="hover:text-black" to="/dashboard">
+                    Dashboard
+                  </Link>
                   </li>
                 )}
+                {user.role === "admin" && (
+                  <li>
+                    <Link className="hover:text-black" to="/admin">
+                       Admin Dashboard
+                    </Link>
+                  </li>
+                )}
+
+                
+
                 <li>
-                  <span>Welcome, {user.name}</span>
-                </li>
-                <li>
-                  <button onClick={handleLogout} className="btn btn-secondary">
+                  <button
+                    onClick={handleLogout}
+                    className="px-4 py-2 bg-white/20 hover:bg-white/30 text-black rounded-lg border border-black/20 transition"
+                  >
                     Logout
                   </button>
                 </li>
@@ -46,17 +69,114 @@ const Navbar = () => {
             ) : (
               <>
                 <li>
-                  <Link to="/login">Login</Link>
+                  <Link className="hover:text-black" to="/login">
+                    Login
+                  </Link>
                 </li>
                 <li>
-                  <Link to="/register">Register</Link>
+                  <Link className="hover:text-black" to="/register">
+                    Register
+                  </Link>
                 </li>
               </>
             )}
           </ul>
+
+          {/* Mobile Hamburger */}
+          <button
+            className="md:hidden p-2 rounded-md text-black/95 hover:bg-white/10"
+            onClick={() => setOpen(!open)}
+          >
+            {open ? (
+              <svg
+                className="w-6 h-6"
+                fill="none"
+                stroke="black"
+                strokeWidth="1.5"
+                viewBox="0 0 24 24"
+              >
+                <path d="M6 18L18 6M6 6l12 12" strokeLinecap="round" />
+              </svg>
+            ) : (
+              <svg
+                className="w-6 h-6"
+                fill="none"
+                stroke="black"
+                strokeWidth="1.5"
+                viewBox="0 0 24 24"
+              >
+                <path d="M4 6h16M4 12h16M4 18h16" strokeLinecap="round" />
+              </svg>
+            )}
+          </button>
         </div>
-      </div>
-    </nav>
+
+        {/* Mobile Menu */}
+        {open && (
+          <div className="md:hidden mt-2 backdrop-blur-md bg-white/10 border border-white/20 rounded-2xl py-4 px-5 shadow-xl text-black">
+            <ul className="flex flex-col gap-4 text-lg">
+              <li>
+                <Link to="/" onClick={() => setOpen(false)}>
+                  Home
+                </Link>
+              </li>
+
+              {user ? (
+                <>
+                  {user.role === "student" && (
+                  <li>
+                    <Link className="hover:text-black" to="/dashboard" onClick={() => setOpen(false)}>
+                    Dashboard
+                  </Link>
+                  </li>
+                )}
+                {user.role === "admin" && (
+                  <li>
+                    <Link className="hover:text-black" to="/admin" onClick={() => setOpen(false)}>
+                       Admin Dashboard
+                    </Link>
+                  </li>
+                )}
+
+               
+
+                  <li>
+                    <button
+                      onClick={() => {
+                        setOpen(false);
+                        handleLogout();
+                      }}
+                      className="w-full px-4 py-2 bg-white/20 hover:bg-white/30 border border-black rounded-lg"
+                    >
+                      Logout
+                    </button>
+                  </li>
+                </>
+              ) : (
+                <>
+                  <li>
+                    <Link
+                      to="/login"
+                      onClick={() => setOpen(false)}
+                    >
+                      Login
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to="/register"
+                      onClick={() => setOpen(false)}
+                    >
+                      Register
+                    </Link>
+                  </li>
+                </>
+              )}
+            </ul>
+          </div>
+        )}
+      </nav>
+    </header>
   );
 };
 
