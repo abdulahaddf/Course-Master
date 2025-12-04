@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import CreateCourse from "../components/Course/CreateCourse";
 import Loading from "../components/Loading";
@@ -8,6 +8,7 @@ import {
   updateCourse,
 } from "../features/courses/courseSlice";
 import { Link } from "react-router-dom";
+import { getCourses } from "../features/courses/courseSlice";
 
 const AdminPanel = () => {
   const dispatch = useDispatch();
@@ -27,16 +28,16 @@ const AdminPanel = () => {
     batches: [{ name: "", startDate: "", endDate: "" }],
   });
 
-  // useEffect(() => {
-  //   dispatch(getCourses({ limit: 100 }));
+  useEffect(() => {
+    dispatch(getCourses({ limit: 100 }));
 
-  //   // Refresh enrollment count every 50 seconds
-  //   const refreshInterval = setInterval(() => {
-  //     dispatch(getCourses({ limit: 100 }));
-  //   }, 50000);
+    // Refresh enrollment count every 50 seconds
+    const refreshInterval = setInterval(() => {
+      dispatch(getCourses({ limit: 100 }));
+    }, 50000);
 
-  //   return () => clearInterval(refreshInterval);
-  // }, [dispatch]);
+    return () => clearInterval(refreshInterval);
+  }, [dispatch]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
