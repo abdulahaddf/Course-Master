@@ -73,11 +73,38 @@ export const getCourses = async (req, res, next) => {
 };
 
 export const getCourseBySlug = async (req, res, next) => {
+  console.log("slug", req.params.slug);
   try {
     const course = await Course.findOne({
       slug: req.params.slug,
       isPublished: true,
     }).populate("instructor", "name email");
+    console.log(course);
+    if (!course) {
+      return res.status(404).json({ error: "Course not found" });
+    }
+
+    // Add enrollment count
+    const enrollmentCount = await Enrollment.countDocuments({
+      course: course._id,
+    });
+    const courseData = {
+      ...course.toObject(),
+      enrollments: enrollmentCount,
+    };
+
+    res.json(courseData);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getCourseById = async (req, res, next) => {
+  try {
+    const course = await Course.findById(req.params.id).populate(
+      "instructor",
+      "name email"
+    );
 
     if (!course) {
       return res.status(404).json({ error: "Course not found" });

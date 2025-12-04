@@ -29,6 +29,7 @@ export const getCourseBySlug = createAsyncThunk(
   async (slug, thunkAPI) => {
     try {
       const response = await courseService.getCourseBySlug(slug);
+      console.log(response);
       return response;
     } catch (error) {
       const message = error.response?.data?.error || error.message;

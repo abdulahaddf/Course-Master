@@ -7,6 +7,7 @@ import {
   deleteCourse,
   updateCourse,
 } from "../features/courses/courseSlice";
+import { Link } from "react-router-dom";
 
 const AdminPanel = () => {
   const dispatch = useDispatch();
@@ -223,14 +224,12 @@ const AdminPanel = () => {
                 >
                   Edit
                 </button>
-                <button
-                  onClick={() =>
-                    (window.location.href = `/admin/course/${course._id}/assignments`)
-                  }
+                <Link to ={`/admin/course/${course._id}/assignments`} 
+                  
                   className="btn btn-secondary mr-2"
                 >
                   View Assignments
-                </button>
+                </Link>
                 <button
                   onClick={() =>
                     (window.location.href = `/admin/course/${course._id}/quiz/create`)
