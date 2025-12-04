@@ -63,8 +63,8 @@ const CourseDetails = () => {
         <h1>{currentCourse.title}</h1>
         <p className="text-muted">{currentCourse.description}</p>
         
-        <div className="grid grid-2 mt-4">
-          <div>
+        <div className="grid grid-2 mt-4 card">
+          <div className="card">
             <h3>Course Details</h3>
             <p><strong>Instructor:</strong> {currentCourse.instructor?.name}</p>
             <p><strong>Category:</strong> {currentCourse.category}</p>
@@ -80,7 +80,7 @@ const CourseDetails = () => {
               </div>
             )}
             {currentCourse.batches?.map((batch, index) => (
-              <div key={index} className="bg-white/10 backdrop-blur-md border border-white/20 shadow-sm hover:shadow-xl rounded-2xl p-6 mb-3">
+              <div key={index} className="card">
                 <h4>{batch.name}</h4>
                 <p>Start: {new Date(batch.startDate).toLocaleDateString()}</p>
                 <p>End: {new Date(batch.endDate).toLocaleDateString()}</p>

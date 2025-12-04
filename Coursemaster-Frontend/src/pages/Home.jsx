@@ -97,7 +97,7 @@ const Home = () => {
 
         <div className="grid grid-2 ">
           {courses?.map((course) => (
-            <div key={course._id} className="bg-white/10 backdrop-blur-md border border-white/20 shadow-lg rounded-2xl p-6">
+            <div key={course._id} className="card">
               <h3 className="font-bold text-xl">{course.title}</h3>
               <p>{course.description}</p>
               <p><strong>Instructor:</strong> {course.instructor?.name}</p>

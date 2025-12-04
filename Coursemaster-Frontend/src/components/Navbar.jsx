@@ -18,7 +18,7 @@ const Navbar = () => {
     <header className="mb-2">
       <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Glass container */}
-        <div className="backdrop-blur-md bg-white/10 border border-white/20 shadow-lg rounded-b-2xl py-3 px-5 flex items-center justify-between">
+        <div className="backdrop-blur-md bg-white border border-white/20 shadow-lg rounded-b-2xl py-3 px-5 flex items-center justify-between">
           
           {/* Brand */}
           <Link

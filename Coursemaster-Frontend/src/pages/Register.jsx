@@ -58,8 +58,8 @@ const Register = () => {
 
   return (
     <div className="mx-auto max-w-xl px-4 sm:px-6 lg:px-8">
-      <div className="bg-white/10 backdrop-blur-md border border-white/20 shadow-lg rounded-2xl p-6">
-        <h1>Register</h1>
+      <div className="card">
+        <h1 className="text-3xl text-center font-semibold">Register</h1>
 
         {isError && <div className="error">{message}</div>}
 
