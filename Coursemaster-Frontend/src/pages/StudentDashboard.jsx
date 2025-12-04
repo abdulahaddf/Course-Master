@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { completeLesson, getMyEnrollments } from '../features/enrollments/enrollmentSlice';
-
+import { Link } from 'react-router-dom';
+import Loading from '../components/Loading';
 
 const StudentDashboard = () => {
   const dispatch = useDispatch();
@@ -35,7 +36,7 @@ const StudentDashboard = () => {
   };
 
   if (isLoading) {
-    return <div className="loading">Loading your courses...</div>;
+    return <Loading/>;
   }
 
   if (isError) {
@@ -50,7 +51,7 @@ const StudentDashboard = () => {
         {enrollments.length === 0 ? (
           <div className="text-center ">
             <p className="my-10 text-4xl">You haven't enrolled in any courses yet.</p>
-            <a href="/" className="btn btn-primary">Browse Courses</a>
+            <Link to="/" className="btn btn-primary">Browse Courses</Link>
           </div>
         ) : (
           <div className="grid grid-2">

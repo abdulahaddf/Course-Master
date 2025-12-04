@@ -7,6 +7,7 @@ import {
   getCourses,
   updateCourse,
 } from "../features/courses/courseSlice";
+import Loading from "../components/Loading";
 
 const AdminPanel = () => {
   const dispatch = useDispatch();
@@ -129,7 +130,7 @@ const AdminPanel = () => {
   };
 
   if (isLoading) {
-    return <div className="loading">Loading admin panel...</div>;
+    return <Loading/>;
   }
 
   if (isError) {

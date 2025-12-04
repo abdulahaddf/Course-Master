@@ -1,65 +1,36 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import heroImage from "../assets/hero.png";
 import { getCourses } from "../features/courses/courseSlice";
-import heroImage from '../assets/hero.png';
+import Loading from "../components/Loading";
 
 const Home = () => {
   const dispatch = useDispatch();
   const { courses, isLoading, isError, message, meta } = useSelector(
     (state) => state.courses
   );
-  console.log(courses);
   const [searchTerm, setSearchTerm] = useState("");
   const [category, setCategory] = useState("");
   const [sortBy, setSortBy] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
 
-  // handle search, category, sort changes with debounce
-  // and fetch first page
+  // Fetch courses only on initial mount
   useEffect(() => {
-    const debounceTimer = setTimeout(() => {
-      const params = {
-        page: 1,
-        limit: 10,
-        q: searchTerm,
-        category,
-        sort: sortBy,
-      };
-      setCurrentPage(1);
-      dispatch(getCourses(params));
-    }, 500); 
-
-    return () => clearTimeout(debounceTimer);
-  }, [searchTerm, category, sortBy, dispatch]);
-
-  // Effect: handle pagination separately 
-  useEffect(() => {
-    if (currentPage > 1) {
-      const params = {
-        page: currentPage,
-        limit: 10,
-        q: searchTerm,
-        category,
-        sort: sortBy,
-      };
-      dispatch(getCourses(params));
-    }
-  }, [currentPage, dispatch]);
-
-// Handle form submit to prevent page reload
-  const handleSearch = (e) => {
-    e.preventDefault();
-
     const params = {
-      page: 1,
+      page: currentPage,
       limit: 10,
       q: searchTerm,
       category,
       sort: sortBy,
     };
-    setCurrentPage(1);
     dispatch(getCourses(params));
+  }, [dispatch, currentPage, searchTerm, category, sortBy]);
+
+  // Handle form submit to prevent page reload
+  const handleSearch = (e) => {
+    e.preventDefault();
+    setCurrentPage(1); // Reset to first page on search
   };
 
   const handlePageChange = (page) => {
@@ -67,7 +38,7 @@ const Home = () => {
   };
 
   if (isLoading) {
-    return <div className="loading">Loading courses...</div>;
+    return <Loading/>;
   }
 
   if (isError) {
@@ -76,16 +47,18 @@ const Home = () => {
 
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-    
       <div className="my-18 md:my-5">
-       
-        <img src={heroImage} alt="Hero" className="mx-auto mt-6 rounded-lg shadow-lg" />
-        
+        <img
+          src={heroImage}
+          alt="Hero"
+          className="mx-auto mt-6 rounded-lg shadow-lg"
+        />
       </div>
       <div className="bg-white/10 backdrop-blur-md border border-white/20 shadow-lg rounded-2xl p-6 ">
-
         <form onSubmit={handleSearch} className="card">
-        <h1 className="text-center mb-5 text-3xl">Find Your Desired Courses</h1>
+          <h1 className="text-center mb-5 text-3xl">
+            Find Your Desired Courses
+          </h1>
           <div className="grid grid-3">
             <div className="form-group">
               <input
@@ -124,7 +97,6 @@ const Home = () => {
               </select>
             </div>
           </div>
-         
         </form>
 
         <div className="grid grid-2 ">

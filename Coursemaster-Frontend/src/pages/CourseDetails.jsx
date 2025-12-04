@@ -3,6 +3,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCourseBySlug } from '../features/courses/courseSlice';
 import { createEnrollment } from '../features/enrollments/enrollmentSlice';
+import Loading from '../components/Loading';
 
 const CourseDetails = () => {
   const { slug } = useParams();
@@ -46,7 +47,7 @@ const CourseDetails = () => {
   };
 
   if (isLoading) {
-    return <div className="loading">Loading course details...</div>;
+    return <Loading/>;
   }
 
   if (isError) {
