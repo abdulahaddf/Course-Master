@@ -48,8 +48,8 @@ const StudentDashboard = () => {
         <h1 className="border w-fit mx-auto p-5 rounded-2xl text-3xl text-center mb-10 bg-white">Welcome to your Dashboard, {user?.name}!</h1>
         
         {enrollments.length === 0 ? (
-          <div className="text-center">
-            <p>You haven't enrolled in any courses yet.</p>
+          <div className="text-center ">
+            <p className="my-10 text-4xl">You haven't enrolled in any courses yet.</p>
             <a href="/" className="btn btn-primary">Browse Courses</a>
           </div>
         ) : (

@@ -23,7 +23,7 @@ const Register = () => {
   // Handle successful registration
   useEffect(() => {
     if (isSuccess || user) {
-      navigate("/dashboard");
+      navigate("/");
     }
   }, [isSuccess, user, navigate]);
 
