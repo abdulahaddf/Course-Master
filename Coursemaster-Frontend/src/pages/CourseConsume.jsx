@@ -6,6 +6,7 @@ import {
   completeLesson,
   getMyEnrollments,
 } from "../features/enrollments/enrollmentSlice";
+import VideoPlayer from "../components/Course/VideoPlayer";
 
 const CourseConsume = () => {
   const { enrollmentId } = useParams();
@@ -64,6 +65,8 @@ console.log(enrollment)
   const course = enrollment.course;
   const currentModule = course.syllabus?.[selectedModule];
   const currentLesson = selectedLesson || currentModule?.lessons?.[0];
+  console.log(currentLesson)
+  console.log(currentLesson.videoUrl)
 console.log(course)
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mt-20 mb-20">
@@ -153,19 +156,12 @@ console.log(course)
                     <h4 className="font-semibold mb-2">Description</h4>
                     <p className="text-justify">{currentLesson.description}</p>
                   </div>
-
+                
                   {currentLesson.videoUrl && (
                     <div className="border-t mt-4 pt-4">
                       <h4 className="font-semibold mb-2">Video</h4>
-                      <video
-                        width="100%"
-                        height="400"
-                        controls
-                        className="rounded-lg"
-                      >
-                        <source src={currentLesson.videoUrl} type="video/mp4" />
-                        Your browser does not support the video tag.
-                      </video>
+                      <VideoPlayer url={currentLesson.videoUrl}/>
+                     
                     </div>
                   )}
 
