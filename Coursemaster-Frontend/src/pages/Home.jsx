@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { getCourses } from "../features/courses/courseSlice";
+import heroImage from '../assets/hero.png';
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -75,6 +76,12 @@ const Home = () => {
 
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    
+      <div className="my-18 md:my-5">
+       
+        <img src={heroImage} alt="Hero" className="mx-auto mt-6 rounded-lg shadow-lg" />
+        
+      </div>
       <div className="bg-white/10 backdrop-blur-md border border-white/20 shadow-lg rounded-2xl p-6 ">
 
         <form onSubmit={handleSearch} className="card">

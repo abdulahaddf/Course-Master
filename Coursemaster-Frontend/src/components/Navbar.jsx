@@ -15,15 +15,15 @@ const Navbar = () => {
   };
 
   return (
-    <header className="mb-2">
+    <header className="mb-2 fixed inset-x-0 top-0 z-50">
       <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Glass container */}
-        <div className="backdrop-blur-md bg-white border border-white/20 shadow-lg rounded-b-2xl py-3 px-5 flex items-center justify-between">
+        <div className="backdrop-blur-md bg-white/10 border border-white/20 rounded-2xl shadow-xl text-black rounded-b-2xl py-3 px-5 flex items-center justify-between">
           
           {/* Brand */}
           <Link
             to="/"
-            className="text-black font-semibold text-xl tracking-tight"
+            className="text-black font-semibold text-3xl border-0"
           >
             CourseMaster
           </Link>
