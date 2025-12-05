@@ -1,9 +1,33 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import heroImage from "../assets/hero.png";
-import { getCourses } from "../features/courses/courseSlice";
 import Loading from "../components/Loading";
+import { getCourses } from "../features/courses/courseSlice";
+import React from "react";
+
+const CourseCard = React.memo(({ course }) => {
+  return (
+    <div className="card">
+      <h3 className="font-bold text-xl">{course.title}</h3>
+      <p>{course.description}</p>
+      <p>
+        <strong>Instructor:</strong> {course.instructor?.name}
+      </p>
+      <p>
+        <strong>Category:</strong> {course.category}
+      </p>
+      <p>
+        <strong>Price:</strong> ${course.price}
+      </p>
+      <div className="mt-3">
+        <Link to={`/course/${course.slug}`} className="btn btn-primary">
+          View Details
+        </Link>
+      </div>
+    </div>
+  );
+});
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -11,35 +35,47 @@ const Home = () => {
     (state) => state.courses
   );
   const [searchTerm, setSearchTerm] = useState("");
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState(searchTerm);
   const [category, setCategory] = useState("");
   const [sortBy, setSortBy] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
 
-  // Fetch courses only on initial mount
+  // Debounce searchTerm
+  useEffect(() => {
+    const t = setTimeout(() => setDebouncedSearchTerm(searchTerm), 500);
+    return () => clearTimeout(t);
+  }, [searchTerm]);
+
+  // Fetch courses
   useEffect(() => {
     const params = {
       page: currentPage,
       limit: 10,
-      q: searchTerm,
+      q: debouncedSearchTerm,
       category,
       sort: sortBy,
     };
     dispatch(getCourses(params));
-  }, [dispatch, currentPage, searchTerm, category, sortBy]);
+  }, [dispatch, currentPage, debouncedSearchTerm, category, sortBy]);
 
-  // Handle form submit to prevent page reload
+  // Memoized handlers
+  const handlePageChange = useCallback((page) => {
+    if (page < 1) return;
+    if (meta && page > meta.pages) return;
+    setCurrentPage(page);
+    window.scrollTo({ top: 300, behavior: "smooth" });
+  }, [meta]);
+
+  const triggerImmediateSearch = useCallback(() => {
+    setCurrentPage(1);
+    setDebouncedSearchTerm(searchTerm);
+  }, [searchTerm]);
+
   const handleSearch = (e) => {
     e.preventDefault();
-    setCurrentPage(1); // Reset to first page on search
+    setCurrentPage(1);
+    setDebouncedSearchTerm(searchTerm);
   };
-
-  const handlePageChange = (page) => {
-    setCurrentPage(page);
-  };
-
-  if (isLoading) {
-    return <Loading/>;
-  }
 
   if (isError) {
     return <div className="error">{message}</div>;
@@ -54,12 +90,13 @@ const Home = () => {
           className="mx-auto mt-6 rounded-lg shadow-lg"
         />
       </div>
+
       <div className="bg-white/10 backdrop-blur-md border border-white/20 shadow-lg rounded-2xl p-6 ">
-        <form onSubmit={handleSearch} className="card">
+        <div className="card" role="search">
           <h1 className="text-center mb-5 text-3xl">
             Find Your Desired Courses
           </h1>
-          <div className="grid grid-3">
+          <form onSubmit={handleSearch} className="grid grid-3 gap-4">
             <div className="form-group">
               <input
                 type="text"
@@ -77,9 +114,7 @@ const Home = () => {
               >
                 <option value="">All Categories</option>
                 <option value="Web Development">Web Development</option>
-                <option value="Frontend Development">
-                  Frontend Development
-                </option>
+                <option value="Frontend Development">Frontend Development</option>
                 <option value="Backend Development">Backend Development</option>
                 <option value="Data Science">Data Science</option>
                 <option value="Mobile Development">Mobile Development</option>
@@ -96,34 +131,34 @@ const Home = () => {
                 <option value="price_desc">Price: High to Low</option>
               </select>
             </div>
-          </div>
-        </form>
-
-        <div className="grid grid-2 ">
-          {courses?.map((course) => (
-            <div key={course._id} className="card">
-              <h3 className="font-bold text-xl">{course.title}</h3>
-              <p>{course.description}</p>
-              <p>
-                <strong>Instructor:</strong> {course.instructor?.name}
-              </p>
-              <p>
-                <strong>Category:</strong> {course.category}
-              </p>
-              <p>
-                <strong>Price:</strong> ${course.price}
-              </p>
-              <div className="mt-3">
-                <Link to={`/course/${course.slug}`} className="btn btn-primary">
-                  View Details
-                </Link>
-              </div>
+            <div className="form-group">
+              <button
+                type="button"
+                className="btn btn-primary"
+                onClick={triggerImmediateSearch}
+              >
+                Search
+              </button>
             </div>
-          ))}
+          </form>
+        </div>
+
+        <div className="grid grid-2 gap-4 mt-6">
+          {isLoading ? (
+            <div className="col-span-full">
+              <Loading />
+            </div>
+          ) : courses?.length ? (
+            courses.map((course) => <CourseCard key={course._id} course={course} />)
+          ) : (
+            <div className="p-6 text-center text-gray-500 col-span-full">
+              No courses found.
+            </div>
+          )}
         </div>
 
         {meta && meta.pages > 1 && (
-          <div className="pagination mt-4">
+          <div className="pagination mt-4 flex items-center justify-center">
             <button
               onClick={() => handlePageChange(currentPage - 1)}
               disabled={currentPage === 1}
