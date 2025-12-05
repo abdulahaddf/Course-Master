@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import assignmentService from "../services/assignmentService";
+import { toast } from "react-toastify";
 
 const AdminAssignments = () => {
   const { courseId } = useParams();
@@ -35,7 +36,7 @@ const AdminAssignments = () => {
       );
       setAssignments((prev) => prev.map((a) => (a._id === id ? res : a)));
     } catch (e) {
-      alert(e.response?.data?.error || e.message);
+      toast.error(e.response?.data?.error || e.message);
     }
   };
 

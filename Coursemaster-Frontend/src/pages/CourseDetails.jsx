@@ -1,6 +1,7 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 import Loading from "../components/Loading";
 import { getCourseBySlug } from "../features/courses/courseSlice";
 import { createEnrollment } from "../features/enrollments/enrollmentSlice";
@@ -9,7 +10,6 @@ const CourseDetails = () => {
   const { slug } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [enrollmentError, setEnrollmentError] = React.useState("");
   const { currentCourse, isLoading, isError, message } = useSelector(
     (state) => state.courses
   );
@@ -20,11 +20,11 @@ const CourseDetails = () => {
   // Checking if the user is already enrolled in the course
   let alreadyEnrolled = false;
   if (user && enrollments) {
-     alreadyEnrolled = enrollments?.some(
+    alreadyEnrolled = enrollments?.some(
       (enrollment) => enrollment?.course._id === currentCourse?._id
     );
   }
-console.log(alreadyEnrolled)
+  console.log(alreadyEnrolled);
   const {
     isLoading: enrollmentLoading,
     isError: enrollmentIsError,
@@ -37,9 +37,7 @@ console.log(alreadyEnrolled)
 
   useEffect(() => {
     if (enrollmentIsError && enrollmentMessage) {
-      setEnrollmentError(enrollmentMessage);
-      const timer = setTimeout(() => setEnrollmentError(""), 5000);
-      return () => clearTimeout(timer);
+      toast.error(enrollmentMessage);
     }
   }, [enrollmentIsError, enrollmentMessage]);
 
@@ -49,8 +47,6 @@ console.log(alreadyEnrolled)
       return;
     }
 
-    setEnrollmentError("");
-
     const enrollmentData = {
       courseId: currentCourse._id,
       batch: batch.name,
@@ -58,7 +54,11 @@ console.log(alreadyEnrolled)
 
     const result = await dispatch(createEnrollment(enrollmentData));
     if (createEnrollment.fulfilled.match(result)) {
+      toast.success("Enrolled successfully");
       navigate("/dashboard");
+    } else {
+      const errMsg = result.payload || "Enrollment failed";
+      toast.error(errMsg);
     }
   };
 
@@ -73,7 +73,7 @@ console.log(alreadyEnrolled)
   if (!currentCourse) {
     return <div className="loading">Course not found</div>;
   }
-  console.log(enrollmentError);
+
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mt-20">
       <div className="bg-white/10 backdrop-blur-md border border-white/20 shadow-lg rounded-2xl p-6">
@@ -100,9 +100,6 @@ console.log(alreadyEnrolled)
           </div>
 
           <div>
-            {/* {enrollmentError && (
-              <div className="alert alert-danger mb-3">{enrollmentError}</div>
-            )} */}
             {currentCourse.batches?.map((batch, index) => (
               <div key={index} className="card space-y-2">
                 <h3 className="text-lg">Enrollment Details</h3>
@@ -113,20 +110,23 @@ console.log(alreadyEnrolled)
                   <p className="text-sm text-muted">
                     Admins cannot enroll in courses.
                   </p>
-                ) : <>
-                {alreadyEnrolled ? (
-                  <button className="btn" disabled>
-                    Already Enrolled
-                  </button>
-                ) : <button
+                ) : (
+                  <>
+                    {alreadyEnrolled ? (
+                      <button className="btn" disabled>
+                        Already Enrolled
+                      </button>
+                    ) : (
+                      <button
                         onClick={() => handleEnroll(batch)}
                         disabled={enrollmentLoading}
                         className="btn btn-primary"
                       >
                         {enrollmentLoading ? "Enrolling..." : "Enroll Now"}
                       </button>
-                    }
-                </>}
+                    )}
+                  </>
+                )}
               </div>
             ))}
           </div>

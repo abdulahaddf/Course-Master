@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { register, reset } from "../features/auth/authSlice";
+import { toast } from "react-toastify";
+import { register } from "../features/auth/authSlice";
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -23,6 +24,7 @@ const Register = () => {
   // Handle successful registration
   useEffect(() => {
     if (isSuccess || user) {
+      toast.success("Registered successfully");
       navigate("/");
     }
   }, [isSuccess, user, navigate]);
@@ -30,7 +32,7 @@ const Register = () => {
   // Handle errors - show message but don't reset immediately
   useEffect(() => {
     if (isError) {
-      console.error(message);
+      toast.error(message || "Registration failed");
     }
   }, [isError, message]);
 
@@ -45,7 +47,7 @@ const Register = () => {
     e.preventDefault();
 
     if (password !== confirmPassword) {
-      alert("Passwords do not match");
+      toast.error("Passwords do not match");
       return;
     }
 
@@ -57,13 +59,11 @@ const Register = () => {
 
     dispatch(register(userData));
   };
-console.log("Error is -", isError)
+  console.log("Error is -", isError);
   return (
     <div className="mx-auto max-w-xl px-4 sm:px-6 lg:px-8 mt-20">
       <div className="card">
         <h1 className="text-3xl text-center font-semibold">Register</h1>
-
-        
 
         <form onSubmit={onSubmit}>
           <div className="form-group">

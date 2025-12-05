@@ -3,10 +3,8 @@ const LessonNavigation = ({
   currentLesson,
   setSelectedLesson,
 }) => {
-    console.log(currentModule)
   return (
     <div className="flex gap-2">
-        
       <button
         onClick={() => {
           const lessons = currentModule?.lessons || [];

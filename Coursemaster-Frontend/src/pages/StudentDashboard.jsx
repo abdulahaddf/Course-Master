@@ -18,7 +18,7 @@ const StudentDashboard = () => {
   if (isLoading) {
     return <Loading />;
   }
-
+console.log(isError);
   if (isError) {
     return <div className="error mt-40 text-center">{message}</div>;
   }

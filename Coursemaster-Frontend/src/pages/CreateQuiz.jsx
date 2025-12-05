@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import courseService from "../services/courseService";
 import quizService from "../services/quizService";
+import { toast } from "react-toastify";
 
 const CreateQuiz = () => {
   const { courseId } = useParams();
@@ -68,15 +69,15 @@ const CreateQuiz = () => {
   const handleCreate = async () => {
     // Validate required fields
     if (!title.trim()) {
-      alert("Title is required");
+      toast.error("Title is required");
       return;
     }
     if (!module.trim()) {
-      alert("Module is required");
+      toast.error("Module is required");
       return;
     }
     if (!questions.length) {
-      alert("At least one question is required");
+      toast.error("At least one question is required");
       return;
     }
 
@@ -84,16 +85,18 @@ const CreateQuiz = () => {
     for (let i = 0; i < questions.length; i++) {
       const q = questions[i];
       if (!q.text.trim()) {
-        alert(`Question ${i + 1}: Text is required`);
+        toast.error(`Question ${i + 1}: Text is required`);
         return;
       }
       const nonEmptyOptions = q.options.filter((opt) => opt.trim());
       if (nonEmptyOptions.length < 2) {
-        alert(`Question ${i + 1}: At least 2 non-empty options are required`);
+        toast.error(
+          `Question ${i + 1}: At least 2 non-empty options are required`
+        );
         return;
       }
       if (q.correctIndex < 0 || q.correctIndex >= nonEmptyOptions.length) {
-        alert(
+        toast.error(
           `Question ${i + 1}: Correct option index must be between 0 and ${
             nonEmptyOptions.length - 1
           }`
@@ -112,7 +115,7 @@ const CreateQuiz = () => {
       };
       console.log("POST ->", quizService.API_URL, payload);
       await quizService.createQuiz(payload, token);
-      alert("Quiz created");
+      toast.success("Quiz created");
       navigate("/admin");
     } catch (err) {
       // Show full error info to help debugging validation / server responses
@@ -128,24 +131,18 @@ const CreateQuiz = () => {
         const details = serverData.details
           ? `\nDetails: ${serverData.details.join("; ")}`
           : "";
-        alert(
-          `Error: ${message}${details}\nRequest URL: ${
-            err.config?.url || quizService.API_URL
-          }`
-        );
+        toast.error(`${message}${details}`);
+        console.error("Request URL:", err.config?.url || quizService.API_URL);
         return;
       }
 
       // Fallback to axios/network error info
       try {
         const info = err.toJSON ? err.toJSON() : { message: err.message };
-        alert(
-          `Error: ${info.message}\nRequest URL: ${
-            err.config?.url || quizService.API_URL
-          }`
-        );
+        toast.error(info.message);
+        console.error("Request URL:", err.config?.url || quizService.API_URL);
       } catch (err) {
-        alert(err.message || "Network error");
+        toast.error(err.message || "Network error");
       }
     }
   };

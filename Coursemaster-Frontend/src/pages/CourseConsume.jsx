@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 import AssignmentForm from "../components/Course/AssignmentForm";
 import CourseHeader from "../components/Course/CourseHeader";
 import LessonNavigation from "../components/Course/LessonNavigation";
@@ -23,6 +24,8 @@ const CourseConsume = () => {
   const [selectedLesson, setSelectedLesson] = useState(null);
   const [assignmentText, setAssignmentText] = useState("");
   const [assignmentSubmitting, setAssignmentSubmitting] = useState(false);
+  const [submittedAssignment, setSubmittedAssignment] = useState(null);
+  const [loadingAssignment, setLoadingAssignment] = useState(false);
   const [quiz, setQuiz] = useState(null);
   const [quizAnswers, setQuizAnswers] = useState([]);
   const [quizResult, setQuizResult] = useState(null);
@@ -33,8 +36,9 @@ const CourseConsume = () => {
       dispatch(getMyEnrollments());
     }
   }, [dispatch, enrollments.length]);
-
+  console.log("enrollments", enrollments);
   const enrollment = enrollments.find((e) => e._id === enrollmentId);
+  console.log("enrollment", enrollment);
 
   // Initialize selected module/lesson when enrollment (and course syllabus) is loaded
   useEffect(() => {
@@ -64,6 +68,7 @@ const CourseConsume = () => {
           lessonId: selectedLesson._id,
         })
       );
+      toast.success("Completed the lesson successfully");
       // Refresh enrollments to see updated progress
       dispatch(getMyEnrollments());
     }
@@ -82,7 +87,7 @@ const CourseConsume = () => {
         setQuiz(q);
         setQuizAnswers(q.questions.map(() => null));
         setQuizResult(null);
-      } catch (e) {
+      } catch {
         setQuiz(null);
       }
     };
@@ -90,8 +95,38 @@ const CourseConsume = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedModule]);
 
+  // Load submitted assignment for current module
+  useEffect(() => {
+    const loadSubmittedAssignment = async () => {
+      if (!course || !currentModule) return;
+      setLoadingAssignment(true);
+      try {
+        const assignment = await assignmentService.getStudentAssignment(
+          course._id,
+          currentModule.title,
+          token
+        );
+        setSubmittedAssignment(assignment);
+      } catch (err) {
+        console.error("Error loading assignment:", err);
+        setSubmittedAssignment(null);
+      } finally {
+        setLoadingAssignment(false);
+      }
+    };
+    loadSubmittedAssignment();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedModule]);
+
   const handleSubmitAssignment = async () => {
     if (!course || !currentModule) return;
+
+    // Validate submission is not empty
+    if (!assignmentText.trim()) {
+      toast.error("Submission text cannot be empty");
+      return;
+    }
+
     setAssignmentSubmitting(true);
     try {
       const payload = {
@@ -99,11 +134,21 @@ const CourseConsume = () => {
         module: currentModule.title,
         submission: assignmentText,
       };
+      console.log("Assignment payload:", payload);
       await assignmentService.createAssignment(payload, token);
       setAssignmentText("");
-      alert("Assignment submitted");
+      toast.success("Assignment submitted");
+
+      // Reload submitted assignment to show it in the display
+      const assignment = await assignmentService.getStudentAssignment(
+        course._id,
+        currentModule.title,
+        token
+      );
+      setSubmittedAssignment(assignment);
     } catch (err) {
-      alert(err.response?.data?.error || err.message);
+      console.error("Assignment error:", err.response?.data);
+      toast.error(err.response?.data?.error || err.message);
     } finally {
       setAssignmentSubmitting(false);
     }
@@ -123,7 +168,7 @@ const CourseConsume = () => {
       const res = await quizService.submitQuiz(quiz._id, quizAnswers, token);
       setQuizResult(res);
     } catch (err) {
-      alert(err.response?.data?.error || err.message);
+      toast.error(err.response?.data?.error || err.message);
     }
   };
 
@@ -207,12 +252,47 @@ const CourseConsume = () => {
 
                   <div className="border-t mt-4 pt-4">
                     <h4 className="font-semibold mb-2">Assignment</h4>
-                    <AssignmentForm
-                      assignmentText={assignmentText}
-                      setAssignmentText={setAssignmentText}
-                      handleSubmitAssignment={handleSubmitAssignment}
-                      assignmentSubmitting={assignmentSubmitting}
-                    />
+                    {loadingAssignment ? (
+                      <p className="text-muted">Loading assignment status...</p>
+                    ) : submittedAssignment ? (
+                      <div className="card bg-blue-500/20">
+                        <p className="mb-2">
+                          <strong>Status:</strong> Submitted
+                        </p>
+                        <p className="mb-2">
+                          <strong>Your Submission:</strong>
+                        </p>
+                        <p className="p-2 bg-black/30 rounded mb-2">
+                          {submittedAssignment.submission}
+                        </p>
+                        {submittedAssignment.grade !== null && (
+                          <>
+                            <p className="mb-2">
+                              <strong>Grade:</strong>{" "}
+                              {submittedAssignment.grade}%
+                            </p>
+                            {submittedAssignment.feedback && (
+                              <p className="mb-2">
+                                <strong>Feedback:</strong>{" "}
+                                {submittedAssignment.feedback}
+                              </p>
+                            )}
+                          </>
+                        )}
+                        {submittedAssignment.grade === null && (
+                          <p className="text-yellow-500">
+                            Awaiting teacher review...
+                          </p>
+                        )}
+                      </div>
+                    ) : (
+                      <AssignmentForm
+                        assignmentText={assignmentText}
+                        setAssignmentText={setAssignmentText}
+                        handleSubmitAssignment={handleSubmitAssignment}
+                        assignmentSubmitting={assignmentSubmitting}
+                      />
+                    )}
                   </div>
 
                   <div className="border-t mt-4 pt-4">

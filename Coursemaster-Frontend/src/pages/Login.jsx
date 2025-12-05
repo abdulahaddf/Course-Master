@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { login, reset } from '../features/auth/authSlice';
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { login, reset } from "../features/auth/authSlice";
 
 const Login = () => {
   const [formData, setFormData] = useState({
-    email: '',
-    password: ''
+    email: "",
+    password: "",
   });
 
   const { email, password } = formData;
@@ -20,14 +21,14 @@ const Login = () => {
 
   useEffect(() => {
     if (isError) {
-      console.error(message);
+      toast.error(message || "Login failed");
     }
 
     if (isSuccess || user) {
-      if(user?.role === 'admin') {
-        navigate('/admin');
-      } else
-      navigate('/dashboard');
+      toast.success("Logged in successfully");
+      if (user?.role === "admin") {
+        navigate("/admin");
+      } else navigate("/dashboard");
     }
 
     dispatch(reset());
@@ -55,9 +56,9 @@ const Login = () => {
     <div className="mx-auto max-w-xl px-4 sm:px-6 lg:px-8 mt-20">
       <div className="card">
         <h1 className="text-3xl text-center font-semibold">Login</h1>
-        
+
         {isError && <div className="error">{message}</div>}
-        
+
         <form onSubmit={onSubmit}>
           <div className="form-group">
             <label htmlFor="email">Email</label>
@@ -84,13 +85,17 @@ const Login = () => {
             />
           </div>
           <div className="form-group">
-            <button type="submit" className="btn btn-primary" disabled={isLoading}>
-              {isLoading ? 'Logging in...' : 'Login'}
+            <button
+              type="submit"
+              className="btn btn-primary"
+              disabled={isLoading}
+            >
+              {isLoading ? "Logging in..." : "Login"}
             </button>
           </div>
         </form>
-        
-        <p style={{ marginTop: '20px', textAlign: 'center' }}>
+
+        <p style={{ marginTop: "20px", textAlign: "center" }}>
           Don't have an account? <Link to="/register">Register here</Link>
         </p>
       </div>
