@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -24,15 +24,28 @@ const Login = () => {
       toast.error(message || "Login failed");
     }
 
-    if (isSuccess || user) {
-      toast.success("Logged in successfully");
-      if (user?.role === "admin") {
-        navigate("/admin");
-      } else navigate("/dashboard");
+    // Prevent double-success toasts: track whether we've already shown
+    // a success toast for this login lifecycle using a ref.
+    if (!loginSuccessToasted.current) {
+      if (isSuccess || user) {
+        toast.success("Logged in successfully");
+        loginSuccessToasted.current = true;
+        if (user?.role === "admin") {
+          navigate("/admin");
+        } else navigate("/dashboard");
+      }
+    }
+
+    // If there was an error, allow future success toasts again.
+    if (isError) {
+      loginSuccessToasted.current = false;
     }
 
     dispatch(reset());
   }, [user, isError, isSuccess, message, navigate, dispatch]);
+
+  // Track whether we've already displayed a success toast for this login
+  const loginSuccessToasted = useRef(false);
 
   const onChange = (e) => {
     setFormData((prevState) => ({
