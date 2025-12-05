@@ -47,10 +47,10 @@ console.log(isError);
                 to={`/course/consume/${enrollment._id}`}
                 className="card cursor-pointer max-w-xl "
               >
-                <h3 className="font-bold text-xl">{enrollment.course.title}</h3>
-                <p className="text-muted">{enrollment.course.description}</p>
+                <h3 className="font-bold text-xl">{enrollment?.course?.title}</h3>
+                <p className="text-muted">{enrollment?.course?.description}</p>
                 <p>
-                  <strong>Batch:</strong> {enrollment.batch}
+                  <strong>Batch:</strong> {enrollment?.batch}
                 </p>
                 <p>
                   <strong>Enrolled:</strong>{" "}

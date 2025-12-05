@@ -209,7 +209,7 @@ const CourseConsume = () => {
       <div className="bg-white/10 backdrop-blur-md border border-white/20 shadow-lg rounded-2xl p-6">
         <CourseHeader course={course} enrollment={enrollment} />
 
-        <div className="grid grid-cols-2 gap-6">
+        <div className="grid md:grid-cols-2 gap-6">
           <SyllabusSidebar
             course={course}
             selectedModule={selectedModule}
