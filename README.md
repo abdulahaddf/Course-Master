@@ -1,7 +1,7 @@
 # CourseMaster - Learning Management System
 
 A full-stack Learning Management System (LMS) built with React, Node.js, Express, and MongoDB. CourseMaster allows instructors to create and manage courses, while students can enroll, watch lessons, complete assignments, and take quizzes.
-Live link - https://coursemaster-df.netlify.app
+- ## Live link - https://coursemaster-df.netlify.app
 ## 🚀 Features
 
 - **User Authentication**: Secure registration and login with JWT tokens
