@@ -1,9 +1,10 @@
-import jwt from 'jsonwebtoken';
-import User from '../models/User.js';
-import { registerSchema, loginSchema } from '../validators/authValidator.js';
+import jwt from "jsonwebtoken";
+import User from "../models/User.js";
+import { sendWelcomeEmail } from "../services/emailService.js";
+import { loginSchema, registerSchema } from "../validators/authValidator.js";
 
 const generateToken = (userId) => {
-  return jwt.sign({ userId }, process.env.JWT_SECRET, { expiresIn: '7d' });
+  return jwt.sign({ userId }, process.env.JWT_SECRET, { expiresIn: "7d" });
 };
 
 export const register = async (req, res, next) => {
@@ -12,27 +13,35 @@ export const register = async (req, res, next) => {
     console.log(validatedData);
     const existingUser = await User.findOne({ email: validatedData.email });
     if (existingUser) {
-      return res.status(400).json({ error: 'Email already registered' });
+      return res.status(400).json({ error: "Email already registered" });
     }
 
     const user = new User({
       name: validatedData.name,
       email: validatedData.email,
-      passwordHash: validatedData.password
+      passwordHash: validatedData.password,
     });
 
     await user.save();
 
+    // Send welcome email
+    try {
+      await sendWelcomeEmail(user.name, user.email);
+    } catch (emailError) {
+      console.error("Failed to send welcome email:", emailError);
+      // Don't fail registration if email fails
+    }
+
     const token = generateToken(user._id);
-    
+
     res.status(201).json({
       token,
       user: {
         id: user._id,
         name: user.name,
         email: user.email,
-        role: user.role
-      }
+        role: user.role,
+      },
     });
   } catch (error) {
     next(error);
@@ -42,27 +51,27 @@ export const register = async (req, res, next) => {
 export const login = async (req, res, next) => {
   try {
     const validatedData = loginSchema.parse(req.body);
-    
+
     const user = await User.findOne({ email: validatedData.email });
     if (!user) {
-      return res.status(401).json({ error: 'Invalid credentials' });
+      return res.status(401).json({ error: "Invalid credentials" });
     }
 
     const isPasswordValid = await user.comparePassword(validatedData.password);
     if (!isPasswordValid) {
-      return res.status(401).json({ error: 'Invalid credentials' });
+      return res.status(401).json({ error: "Invalid credentials" });
     }
 
     const token = generateToken(user._id);
-    
+
     res.json({
       token,
       user: {
         id: user._id,
         name: user.name,
         email: user.email,
-        role: user.role
-      }
+        role: user.role,
+      },
     });
   } catch (error) {
     next(error);
@@ -70,7 +79,7 @@ export const login = async (req, res, next) => {
 };
 
 export const logout = async (req, res) => {
-  res.json({ message: 'Logged out successfully' });
+  res.json({ message: "Logged out successfully" });
 };
 
 export const getMe = async (req, res) => {
@@ -79,7 +88,7 @@ export const getMe = async (req, res) => {
       id: req.user._id,
       name: req.user.name,
       email: req.user.email,
-      role: req.user.role
-    }
+      role: req.user.role,
+    },
   });
 };
