@@ -1,7 +1,7 @@
 # CourseMaster - Learning Management System
 
 A full-stack Learning Management System (LMS) built with React, Node.js, Express, and MongoDB. CourseMaster allows instructors to create and manage courses, while students can enroll, watch lessons, complete assignments, and take quizzes.
-
+Live link - https://coursemaster-df.netlify.app
 ## 🚀 Features
 
 - **User Authentication**: Secure registration and login with JWT tokens
@@ -11,9 +11,9 @@ A full-stack Learning Management System (LMS) built with React, Node.js, Express
 - **Assignments**: Submit assignments and receive instructor feedback
 - **Quizzes**: Take quizzes to test knowledge
 - **Admin Dashboard**: Comprehensive admin panel for course and user management 
-- **(Admin: admin@coursemaster.com / admin123)**
+- (Admin: admin@coursemaster.com / admin123)
 
-- **Email Notifications**: Welcome emails sent to new users
+- **Email Notifications**: Welcome emails sent to new users using nodemailer
 
 ## 📁 Project Structure
 
@@ -62,11 +62,10 @@ npm install
 3. Create a `.env` file in the `Server` directory:
 ```env
 PORT=5000
-MONGODB_URI=your_mongodb_connection_string
-JWT_SECRET=your_jwt_secret_key
-EMAIL_USER=your_email@gmail.com
-EMAIL_PASSWORD=your_app_password
-CLIENT_URL=http://localhost:5173
+MONGODB_URI=mongodb+srv://Ahad:gpYktnfyoVxUpOfY@cluster0.h60wqpl.mongodb.net/CourseMaster?appName=Cluster0
+JWT_SECRET=4f8e0f7c2c9a49a588b8fa4693c1d7a1e4d73c84a2f51b6763d995f4b6c87e59
+EMAIL_USER=abdulahad.df1@gmail.com
+EMAIL_PASSWORD=bkzj wygm uzro gsqe
 ```
 
 4. Start the development server:
