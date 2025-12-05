@@ -1,10 +1,9 @@
-import { useEffect, useState, useCallback } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import heroImage from "../assets/hero.png";
 import Loading from "../components/Loading";
 import { getCourses } from "../features/courses/courseSlice";
-import React from "react";
 
 const CourseCard = React.memo(({ course }) => {
   return (
@@ -59,17 +58,15 @@ const Home = () => {
   }, [dispatch, currentPage, debouncedSearchTerm, category, sortBy]);
 
   // Memoized handlers
-  const handlePageChange = useCallback((page) => {
-    if (page < 1) return;
-    if (meta && page > meta.pages) return;
-    setCurrentPage(page);
-    window.scrollTo({ top: 300, behavior: "smooth" });
-  }, [meta]);
-
-  const triggerImmediateSearch = useCallback(() => {
-    setCurrentPage(1);
-    setDebouncedSearchTerm(searchTerm);
-  }, [searchTerm]);
+  const handlePageChange = useCallback(
+    (page) => {
+      if (page < 1) return;
+      if (meta && page > meta.pages) return;
+      setCurrentPage(page);
+      window.scrollTo({ top: 300, behavior: "smooth" });
+    },
+    [meta]
+  );
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -114,7 +111,9 @@ const Home = () => {
               >
                 <option value="">All Categories</option>
                 <option value="Web Development">Web Development</option>
-                <option value="Frontend Development">Frontend Development</option>
+                <option value="Frontend Development">
+                  Frontend Development
+                </option>
                 <option value="Backend Development">Backend Development</option>
                 <option value="Data Science">Data Science</option>
                 <option value="Mobile Development">Mobile Development</option>
@@ -131,7 +130,7 @@ const Home = () => {
                 <option value="price_desc">Price: High to Low</option>
               </select>
             </div>
-            <div className="form-group">
+            {/* <div className="form-group">
               <button
                 type="button"
                 className="btn btn-primary"
@@ -139,7 +138,7 @@ const Home = () => {
               >
                 Search
               </button>
-            </div>
+            </div> */}
           </form>
         </div>
 
@@ -149,7 +148,9 @@ const Home = () => {
               <Loading />
             </div>
           ) : courses?.length ? (
-            courses.map((course) => <CourseCard key={course._id} course={course} />)
+            courses.map((course) => (
+              <CourseCard key={course._id} course={course} />
+            ))
           ) : (
             <div className="p-6 text-center text-gray-500 col-span-full">
               No courses found.
