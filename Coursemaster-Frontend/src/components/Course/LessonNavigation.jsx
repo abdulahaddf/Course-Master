@@ -4,7 +4,7 @@ const LessonNavigation = ({
   setSelectedLesson,
 }) => {
   return (
-    <div className="flex gap-2">
+    <div className="flex gap-2 mt-3">
       <button
         onClick={() => {
           const lessons = currentModule?.lessons || [];
@@ -16,7 +16,7 @@ const LessonNavigation = ({
           }
         }}
         disabled={currentModule?.lessons?.[0]?._id === currentLesson._id}
-        className="btn btn-secondary flex-1"
+        className="btn btn-primary flex-1"
       >
         ← Previous
       </button>
@@ -35,7 +35,7 @@ const LessonNavigation = ({
           currentModule?.lessons?.[currentModule?.lessons?.length - 1]?._id ===
           currentLesson._id
         }
-        className="btn btn-secondary flex-1"
+        className="btn btn-primary flex-1"
       >
         Next →
       </button>

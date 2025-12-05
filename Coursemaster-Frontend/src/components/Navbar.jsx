@@ -23,15 +23,15 @@ const Navbar = () => {
           {/* Brand */}
           <Link
             to="/"
-            className="text-black font-semibold text-3xl border-0"
+            className="text-black font-extrabold text-3xl border-0"
           >
             CourseMaster
           </Link>
 
           {/* Desktop Links */}
-          <ul className="hidden md:flex items-center gap-6 text-black/90 text-base">
+          <ul className="hidden md:flex items-center gap-6 text-black/90 text-lg ">
             <li>
-              <Link className="hover:text-black" to="/">
+              <Link className="hover:text-black hover:underline" to="/">
                 Home
               </Link>
             </li>
@@ -42,14 +42,14 @@ const Navbar = () => {
 
                 {user.role === "student" && (
                   <li>
-                    <Link className="hover:text-black" to="/dashboard">
+                    <Link className="hover:text-black hover:underline" to="/dashboard">
                     Dashboard
                   </Link>
                   </li>
                 )}
                 {user.role === "admin" && (
                   <li>
-                    <Link className="hover:text-black" to="/admin">
+                    <Link className="hover:text-black hover:underline" to="/admin">
                        Admin Dashboard
                     </Link>
                   </li>
@@ -69,12 +69,12 @@ const Navbar = () => {
             ) : (
               <>
                 <li>
-                  <Link className="hover:text-black" to="/login">
+                  <Link className="hover:text-black hover:underline" to="/login">
                     Login
                   </Link>
                 </li>
                 <li>
-                  <Link className="hover:text-black" to="/register">
+                  <Link className="hover:text-black hover:underline" to="/register">
                     Register
                   </Link>
                 </li>

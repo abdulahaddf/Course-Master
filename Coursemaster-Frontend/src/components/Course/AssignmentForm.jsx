@@ -7,13 +7,13 @@ const AssignmentForm = ({
   return (
     <div>
       <p className="text-sm text-muted mb-2">
-        Submit a Google Drive link or a text answer for this module.
+       
       </p>
       <textarea
-        placeholder="Paste Drive link or write your answer here"
+        placeholder="Submit link or text answer or feedback for this module."
         value={assignmentText}
         onChange={(e) => setAssignmentText(e.target.value)}
-        rows={3}
+        rows={1}
         className="w-full mb-2 p-2 border rounded"
       />
       <button

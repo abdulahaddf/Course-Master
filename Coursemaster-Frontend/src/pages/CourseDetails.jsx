@@ -62,13 +62,10 @@ const CourseDetails = () => {
     }
   };
 
-  if (isLoading) {
+  if (isLoading || isError) {
     return <Loading />;
   }
 
-  if (isError) {
-    return <div className="error">{message}</div>;
-  }
 
   if (!currentCourse) {
     return <div className="loading">Course not found</div>;
@@ -84,7 +81,7 @@ const CourseDetails = () => {
 
         <div className="grid grid-2 mt-4 card">
           <div className="card space-y-2">
-            <h3 className="text-lg">Course Details</h3>
+            <h3 className="text-lg font-semibold">Course Details</h3>
             <p>
               <strong>Instructor:</strong> {currentCourse.instructor?.name}
             </p>
@@ -102,7 +99,7 @@ const CourseDetails = () => {
           <div>
             {currentCourse.batches?.map((batch, index) => (
               <div key={index} className="card space-y-2">
-                <h3 className="text-lg">Enrollment Details</h3>
+                <h3 className="text-lg font-semibold">Enrollment Details</h3>
                 <h4>{batch.name}</h4>
                 <p>Starts: {new Date(batch.startDate).toLocaleDateString()}</p>
                 <p>Ends: {new Date(batch.endDate).toLocaleDateString()}</p>

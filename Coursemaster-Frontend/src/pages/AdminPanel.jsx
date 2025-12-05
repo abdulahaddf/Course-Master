@@ -227,7 +227,7 @@ const AdminPanel = () => {
                 </button>
                 <Link to ={`/admin/course/${course._id}/assignments`} 
                   
-                  className="btn btn-secondary mr-2"
+                  className="btn btn-primary mr-2"
                 >
                   Assignments
                 </Link>
@@ -235,13 +235,13 @@ const AdminPanel = () => {
                   onClick={() =>
                     (window.location.href = `/admin/course/${course._id}/quiz/create`)
                   }
-                  className="btn btn-warning"
+                  className="btn btn-primary"
                 >
                   Create Quiz
                 </button>
                 <button
                   onClick={() => handleDelete(course._id)}
-                  className="btn btn-danger"
+                  className="btn hover:bg-red-500 hover:text-white hover:border-red-500 border-red-600 text-red-500"
                 >
                   Delete
                 </button>

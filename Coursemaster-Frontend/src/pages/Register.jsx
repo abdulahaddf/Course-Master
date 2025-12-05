@@ -128,7 +128,7 @@ const Register = () => {
         {isError && <div className="error">{message}</div>}
 
         <p style={{ marginTop: "20px", textAlign: "center" }}>
-          Already have an account? <Link to="/login">Login here</Link>
+          Already have an account? <Link className="underline" to="/login">Login here</Link>
         </p>
       </div>
     </div>

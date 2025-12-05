@@ -19,7 +19,7 @@ const SyllabusSidebar = ({
               }}
               className={`w-full text-left p-2 rounded ${
                 selectedModule === moduleIndex
-                  ? "bg-blue-500 text-white"
+                  ? "bg-black text-white"
                   : "bg-white/10 hover:bg-white/20"
               }`}
             >
@@ -36,10 +36,9 @@ const SyllabusSidebar = ({
                     onClick={() => setSelectedLesson(lesson)}
                     className={`w-full text-left p-2 rounded flex items-center gap-2 text-sm ${
                       selectedLesson?._id === lesson._id
-                        ? "bg-green-500 text-white"
-                        : isLessonCompleted(lesson._id)
-                        ? "bg-green-500/30 text-green-100"
-                        : "bg-white/10 hover:bg-white/20"
+                        ? " bg-gray-500 text-white border  hover:text-white hover:bg-gray-500"
+                        
+                        : "hover:bg-gray-500 border hover:text-white duration-500 "
                     }`}
                   >
                     <input

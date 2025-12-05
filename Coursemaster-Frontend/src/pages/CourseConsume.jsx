@@ -249,7 +249,11 @@ const CourseConsume = () => {
                       </p>
                     </div>
                   )}
-
+                  <LessonNavigation
+                    currentModule={currentModule}
+                    currentLesson={currentLesson}
+                    setSelectedLesson={setSelectedLesson}
+                  />
                   <div className="border-t mt-4 pt-4">
                     <h4 className="font-semibold mb-2">Assignment</h4>
                     {loadingAssignment ? (
@@ -310,7 +314,7 @@ const CourseConsume = () => {
                 {!isLessonCompleted(currentLesson._id) && (
                   <button
                     onClick={handleMarkComplete}
-                    className="btn btn-success w-full"
+                    className="btn btn-primary w-full"
                   >
                     Mark Lesson as Complete
                   </button>
@@ -321,12 +325,6 @@ const CourseConsume = () => {
                     ✓ Lesson Completed
                   </div>
                 )}
-
-                <LessonNavigation
-                  currentModule={currentModule}
-                  currentLesson={currentLesson}
-                  setSelectedLesson={setSelectedLesson}
-                />
               </>
             ) : (
               <div className="card text-center">

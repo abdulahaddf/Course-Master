@@ -68,7 +68,7 @@ console.log(isError);
                   </div>
                 </div>
 
-                <p className="text-sm text-blue-400">Click to view course →</p>
+                <p className="btn btn-primary">Click to view course →</p>
               </Link>
             ))}
           </div>
