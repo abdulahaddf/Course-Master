@@ -31,10 +31,10 @@ const AdminPanel = () => {
   useEffect(() => {
     dispatch(getCourses({ limit: 100 }));
 
-    // Refresh enrollment count every 50 seconds
+    // Refresh enrollment count every 100 seconds
     const refreshInterval = setInterval(() => {
       dispatch(getCourses({ limit: 100 }));
-    }, 50000);
+    }, 100000);
 
     return () => clearInterval(refreshInterval);
   }, [dispatch]);
@@ -164,12 +164,8 @@ const AdminPanel = () => {
     });
   };
 
-  if (isLoading) {
+  if (isLoading || isError) {
     return <Loading />;
-  }
-
-  if (isError) {
-    return <div className="error">{message}</div>;
   }
 
   return (

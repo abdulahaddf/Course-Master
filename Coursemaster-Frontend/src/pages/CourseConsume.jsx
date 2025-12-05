@@ -84,6 +84,7 @@ const CourseConsume = () => {
           currentModule.title,
           token
         );
+        console.log("quizes",q)
         setQuiz(q);
         setQuizAnswers(q.questions.map(() => null));
         setQuizResult(null);
@@ -181,13 +182,13 @@ const CourseConsume = () => {
   if (isLoading) {
     return <Loading />;
   }
-  console.log(enrollment);
+//   console.log(enrollment);
   const course = enrollment?.course;
   const currentModule = course?.syllabus?.[selectedModule];
   const currentLesson = currentModule?.lessons?.find(
     (l) => l._id === selectedLesson?._id
   );
-  console.log(currentModule);
+//   console.log(currentModule);
   if (!enrollment) {
     return (
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mt-20">

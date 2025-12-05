@@ -7,7 +7,7 @@ const QuizPanel = ({
 }) => {
   if (!quiz)
     return <p className="text-sm text-muted">No quiz for this module.</p>;
-
+// console.log(quiz);
   return (
     <div>
       {quiz.questions.map((q, qi) => (
