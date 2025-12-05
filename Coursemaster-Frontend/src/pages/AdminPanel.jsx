@@ -27,7 +27,7 @@ const AdminPanel = () => {
     syllabus: [{ title: "", description: "", lessons: [] }],
     batches: [{ name: "", startDate: "", endDate: "" }],
   });
-
+// fetching courses
   useEffect(() => {
     dispatch(getCourses({ limit: 100 }));
 
@@ -46,7 +46,7 @@ const AdminPanel = () => {
       [name]: value,
     }));
   };
-
+// handling create and update course
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -82,7 +82,7 @@ const AdminPanel = () => {
       batches: [{ name: "", startDate: "", endDate: "" }],
     });
   };
-
+// handling edit course
   const handleEdit = (course) => {
     setEditingCourse(course);
     setFormData({
@@ -218,7 +218,7 @@ const AdminPanel = () => {
                 <strong>Students Enrolled:</strong> {course.enrollments || 0}
               </p>
 
-              <div className="mt-3">
+              <div className="mt-3 grid grid-cols-2 gap-2">
                 <button
                   onClick={() => handleEdit(course)}
                   className="btn btn-primary mr-2"
@@ -229,7 +229,7 @@ const AdminPanel = () => {
                   
                   className="btn btn-secondary mr-2"
                 >
-                  View Assignments
+                  Assignments
                 </Link>
                 <button
                   onClick={() =>

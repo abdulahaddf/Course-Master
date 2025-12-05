@@ -40,12 +40,12 @@ console.log(isError);
             </Link>
           </div>
         ) : (
-          <div className="grid grid-2">
+          <div className="grid grid-cols-2">
             {enrollments.map((enrollment) => (
               <Link
                 key={enrollment._id}
                 to={`/course/consume/${enrollment._id}`}
-                className="card cursor-pointer"
+                className="card cursor-pointer max-w-xl "
               >
                 <h3 className="font-bold text-xl">{enrollment.course.title}</h3>
                 <p className="text-muted">{enrollment.course.description}</p>

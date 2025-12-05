@@ -38,7 +38,7 @@ const Home = () => {
   const [category, setCategory] = useState("");
   const [sortBy, setSortBy] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-
+console.log(courses);
   // Debounce searchTerm
   useEffect(() => {
     const t = setTimeout(() => setDebouncedSearchTerm(searchTerm), 500);
@@ -49,7 +49,7 @@ const Home = () => {
   useEffect(() => {
     const params = {
       page: currentPage,
-      limit: 10,
+      limit: 4,
       q: debouncedSearchTerm,
       category,
       sort: sortBy,
