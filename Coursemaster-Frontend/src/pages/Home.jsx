@@ -74,9 +74,9 @@ console.log(courses);
     setDebouncedSearchTerm(searchTerm);
   };
 
-  if (isError) {
-    return <div className="error">{message}</div>;
-  }
+  // if (isError) {
+  //   return console.log(isError);
+  // }
 
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -143,7 +143,7 @@ console.log(courses);
         </div>
 
         <div className="grid grid-2 gap-4 mt-6">
-          {isLoading ? (
+          {isLoading || isError ? (
             <div className="col-span-full">
               <Loading />
             </div>

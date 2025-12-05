@@ -26,7 +26,10 @@ const limiter = rateLimit({
 });
 
 app.use(helmet());
-app.use(cors());
+app.use(cors({
+  origin: "https://coursemaster-df.netlify.app", 
+  credentials: true
+}));
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true }));
 app.use(limiter);
@@ -37,6 +40,12 @@ app.use("/api/enrollments", enrollmentRoutes);
 app.use("/api/assignments", assignmentRoutes);
 app.use("/api/quizzes", quizRoutes);
 
+// Base route to show server is running
+app.get("/", (req, res) => {
+  res.send("Course Master Server is running 🚀");
+});
+
+// Health check route
 app.get("/api/health", (req, res) => {
   res.json({ status: "OK", timestamp: new Date().toISOString() });
 });
