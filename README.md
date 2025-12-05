@@ -11,6 +11,8 @@ A full-stack Learning Management System (LMS) built with React, Node.js, Express
 - **Assignments**: Submit assignments and receive instructor feedback
 - **Quizzes**: Take quizzes to test knowledge
 - **Admin Dashboard**: Comprehensive admin panel for course and user management
+                    #Admin mail - admin@coursemaster.com
+                    #Admin pass - admin123
 - **Email Notifications**: Welcome emails sent to new users
 
 ## 📁 Project Structure
