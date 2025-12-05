@@ -1,5 +1,9 @@
+# API redirects - This is a fallback if VITE_API_URL is not set
+# Update the URL below to your Vercel server URL
+# Or remove this section if you're using VITE_API_URL environment variable
 [[redirects]]
   from = "/api/*"
-  to = "https://coursemaster-rosy.vercel.app/:splat"
+  to = "https://course-master-server-production.up.railway.app/api/:splat"
   status = 200
   force = true
+  headers = { X-From = "Netlify" }

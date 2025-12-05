@@ -1,6 +1,7 @@
 import axios from 'axios';
+import { getApiUrl } from '../config/api.js';
 
-const API_URL = '/api/auth';
+const API_URL = getApiUrl('api/auth');
 
 const authService = {
   register: async (userData) => {

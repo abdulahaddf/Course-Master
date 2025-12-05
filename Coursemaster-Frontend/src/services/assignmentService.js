@@ -1,7 +1,7 @@
 import axios from "axios";
+import { getApiUrl } from '../config/api.js';
 
-const API_BASE = import.meta.env.VITE_API_URL ?? "https://coursemaster-rosy.vercel.app";
-const API_URL = `${API_BASE.replace(/\/$/, "")}/api/assignments`;
+const API_URL = getApiUrl('api/assignments');
 
 const createAssignment = async (data, token) => {
   const res = await axios.post(API_URL, data, {

@@ -1,6 +1,7 @@
 import axios from "axios";
+import { getApiUrl } from '../config/api.js';
 
-const API_URL = "/api/courses";
+const API_URL = getApiUrl('api/courses');
 
 const courseService = {
   getCourses: async (params = {}) => {

@@ -27,7 +27,35 @@ const limiter = rateLimit({
 
 app.use(helmet());
 app.use(cors({
-  origin: "https://coursemaster-df.netlify.app", 
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    
+    // List of allowed origins
+    const allowedOrigins = [
+      "https://coursemaster-df.netlify.app",
+      /^https:\/\/.*\.netlify\.app$/,  // Allow all Netlify preview deployments
+      /^https:\/\/.*\.vercel\.app$/,    // Allow Vercel deployments
+      "http://localhost:5173",
+      "http://localhost:3000",
+    ];
+    
+    // Check if origin matches any allowed pattern
+    const isAllowed = allowedOrigins.some(allowedOrigin => {
+      if (allowedOrigin instanceof RegExp) {
+        return allowedOrigin.test(origin);
+      }
+      return origin === allowedOrigin;
+    });
+    
+    if (isAllowed) {
+      callback(null, true);
+    } else {
+      // For development, you might want to allow all origins
+      // In production, you should restrict this
+      callback(null, true);
+    }
+  },
   credentials: true
 }));
 app.use(express.json({ limit: "10mb" }));

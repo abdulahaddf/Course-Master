@@ -1,6 +1,7 @@
 import axios from 'axios';
+import { getApiUrl } from '../config/api.js';
 
-const API_URL = '/api/enrollments';
+const API_URL = getApiUrl('api/enrollments');
 
 const enrollmentService = {
   createEnrollment: async (enrollmentData, token) => {

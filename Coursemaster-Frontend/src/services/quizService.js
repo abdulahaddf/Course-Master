@@ -1,7 +1,7 @@
 import axios from "axios";
+import { getApiUrl } from '../config/api.js';
 
-const API_BASE = import.meta.env.VITE_API_URL ?? "https://coursemaster-rosy.vercel.app";
-export const API_URL = `${API_BASE.replace(/\/$/, "")}/api/quizzes`;
+export const API_URL = getApiUrl('api/quizzes');
 
 const authHeader = (token) => ({
   headers: { Authorization: `Bearer ${token}` },
