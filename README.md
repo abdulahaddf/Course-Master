@@ -62,10 +62,10 @@ npm install
 3. Create a `.env` file in the `Server` directory:
 ```env
 PORT=5000
-MONGODB_URI=mongodb+srv://Ahad:gpYktnfyoVxUpOfY@cluster0.h60wqpl.mongodb.net/CourseMaster?appName=Cluster0
-JWT_SECRET=4f8e0f7c2c9a49a588b8fa4693c1d7a1e4d73c84a2f51b6763d995f4b6c87e59
-EMAIL_USER=abdulahad.df1@gmail.com
-EMAIL_PASSWORD=bkzj wygm uzro gsqe
+MONGODB_URI=
+JWT_SECRET=
+EMAIL_USER=
+EMAIL_PASSWORD=
 ```
 
 4. Start the development server:
